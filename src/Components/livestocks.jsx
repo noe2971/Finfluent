@@ -43,7 +43,7 @@ const Stocks = () => {
     }, [selectedStock]);
 
     return (
-        <div className="flex h-screen bg-gradient-to-b from-blue-900 to-black text-white ml-60">
+        <div className="flex h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white">
             <div className="flex flex-col items-center justify-center w-full">
                 <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
                     <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Stock Data Visualization</h2>

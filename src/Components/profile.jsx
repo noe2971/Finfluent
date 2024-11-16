@@ -97,13 +97,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-blue-100 ml-80">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-[100%] ml-[18vh]">
       <ToastContainer />
       <form onSubmit={handleSubmit} className="bg-blue-600 shadow-lg rounded-lg p-6 max-w-md w-full text-white">
-        <h2 className="text-2xl font-bold mb-6 text-center bg-gray-800 h-16 grid place-items-center">Profile Builder</h2>
+        <h2 className="text-2xl font-medium mb-6 text-center bg-gray-800 h-16 grid place-items-center">Profile Builder</h2>
 
         <div className="mb-4">
-          <label className="block font-semibold">Name:</label>
+          <label className="block font-medium">Name:</label>
           <input
             type="text"
             name="name"
@@ -115,7 +115,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Age:</label>
+          <label className="block font-medium">Age:</label>
           <input
             type="number"
             name="age"
@@ -127,7 +127,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Salary:</label>
+          <label className="block font-medium">Salary:</label>
           <input
             type="number"
             name="salary"
@@ -139,7 +139,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Big Expenses:</label>
+          <label className="block font-medium">Big Expenses:</label>
           <div className="flex flex-wrap gap-2 mt-1">
             {["House loan", "Car loan", "Education loan", "Children", "Other"].map((option) => (
               <button
@@ -157,7 +157,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Current Investments:</label>
+          <label className="block font-medium">Current Investments:</label>
           <div className="flex flex-wrap gap-2 mt-1">
             {["Stocks", "Bonds", "Crypto", "Gold", "Real Estate", "Other"].map((option) => (
               <button
@@ -175,7 +175,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Desired Investments:</label>
+          <label className="block font-medium">Desired Investments:</label>
           <div className="flex flex-wrap gap-2 mt-1">
             {["Stocks", "Bonds", "Crypto", "Gold", "Real Estate", "Other"].map((option) => (
               <button
@@ -193,7 +193,7 @@ const Profile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block font-semibold">Financial Goals:</label>
+          <label className="block font-medium">Financial Goals:</label>
           <input
             type="text"
             name="goals"
@@ -204,7 +204,7 @@ const Profile = () => {
           />
         </div>
 
-        <button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded w-full">
+        <button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded w-full">
           Save Profile
         </button>
       </form>

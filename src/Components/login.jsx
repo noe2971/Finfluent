@@ -42,9 +42,9 @@ const Login= () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 ml-60">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-[100%] ml-[18vh]">
       <div className="bg-white p-8 shadow-lg rounded-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">{isSignUp ? "Sign Up" : "Login"}</h2>
+        <h2 className="text-2xl font-semibold font-sans text-center mb-6">{isSignUp ? "Sign Up" : "Login"}</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
