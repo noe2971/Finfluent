@@ -43,8 +43,6 @@ const Dashboard = () => {
 
   const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-  const window = new JSDOM('').window; 
-  const domPurify = DOMPurify(window);
 
   const handleGemini = async () => {
       const userProfile = profileData
