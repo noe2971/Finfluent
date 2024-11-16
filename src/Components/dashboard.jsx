@@ -5,8 +5,7 @@ import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import {marked} from marked;
-import DOMpurify from "dompurify";
+
 
 // Registering the necessary chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
@@ -73,9 +72,7 @@ const Dashboard = () => {
         );
 
         const botResponse = response.data.candidates[0].content.parts[0].text;
-        const htmlContent = marked(botResponse)
-        const sanitizedHtml = domPurify.sanitize(htmlContent)
-        setGeminiTips(sanitizedHtml);
+        setGeminiTips(botResponse);
       } catch (error) {
         console.error('Error sending message:', error);
         setGeminiTips("Sorry, we were unable to fetch response from Gemini")
