@@ -12,8 +12,24 @@ function App() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState(null); // Store profile data here
+  const [language, setLanguage] = useState('English'); // Default language
 
   const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
+  // Supported languages
+  const languages = [
+    "English",
+    "Hindi",
+    "Bengali",
+    "Telugu",
+    "Marathi",
+    "Tamil",
+    "Gujarati",
+    "Kannada",
+    "Malayalam",
+    "Punjabi",
+    "Odia",
+  ];
 
   // Fetch user profile data
   useEffect(() => {
@@ -42,14 +58,14 @@ function App() {
         ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
         : "No user profile available.";
 
-      console.log(profileData);
-
-      const prompt = `${userProfile} User Question: ${input}`;
+      const prompt = `Language: ${language}. ${userProfile} User Question: ${input}`;
+      console.log(prompt)
+      console.log(googleApiKey)
 
       try {
         setLoading(true);
         const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
           {
             "contents": [
               {
@@ -76,8 +92,20 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] ">
-      <h1 className="mb-8 font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
-      <LanguageSelector></LanguageSelector>
+      <div className="flex justify-center gap-10 items-center w-full px-8 mb-8">
+        <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
+        <select
+          className="p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          {languages.map((lang, index) => (
+            <option key={index} value={lang}>
+              {lang}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="bg-white w-[95vh] shadow-lg rounded-lg overflow-hidden">
         <div className="p-8 h-[65vh] overflow-y-auto">
           {messages.map((msg, index) => (

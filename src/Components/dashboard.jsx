@@ -6,7 +6,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-
 // Registering the necessary chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -51,7 +50,7 @@ const Dashboard = () => {
 
       console.log(profileData);
 
-      const prompt = `${userProfile} User Question: Give me 3 concise financial tips `;
+      const prompt = `${userProfile} User Question: Give me 3 concise financial tips`;
 
       try {
         const response = await axios.post(
@@ -73,9 +72,9 @@ const Dashboard = () => {
         setGeminiTips(botResponse);
       } catch (error) {
         console.error('Error sending message:', error);
-        setGeminiTips("Sorry, we were unable to fetch response from Gemini")
+        setGeminiTips("Sorry, we were unable to fetch response from Gemini");
       }
-    };
+  };
   
 
   const getSavingsBadge = (budget, moneySpent) => {
@@ -126,11 +125,11 @@ const Dashboard = () => {
   const progress = savingsProgress(budget, moneySpent);
 
   return (
-    <div className="font-sans p-8 bg-gray-100 min-h-screen">
+    <div className="font-sans p-8 bg-gradient-to-b from-[#172554] to-[#bae6fd] min-h-screen ml-60">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-semibold text-gray-800">Welcome</h1>
-        <h2 className="text-2xl text-gray-600 mt-2">Badge: {getSavingsBadge(budget, moneySpent)}</h2>
-        <hr className="my-4 border-gray-300" />
+        <h1 className="text-3xl font-semibold text-white">Welcome</h1>
+        <h2 className="text-2xl text-white mt-2">Badge: {getSavingsBadge(budget, moneySpent)}</h2>
+        <hr className="my-4 border-white" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -145,6 +144,13 @@ const Dashboard = () => {
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Income vs Expenses</h3>
           <Bar data={incomeExpenseData} />
         </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-lg shadow-md mb-8 text-center">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">Risk Level</h3>
+        <div onClick={handleGemini}>Get Risk Level</div>
+        <ul className="list-disc pl-6 text-gray-700">
+        </ul>
       </div>
 
       {/* Savings Progress */}
