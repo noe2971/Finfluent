@@ -12,6 +12,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 
 const Dashboard = () => {
   const [geminiTips, setGeminiTips] = useState([]);
+  const [RiskLevel, setRiskLevel] = useState();
   const [badge, setBadge] = useState('');
   const [profileData, setProfileData] = useState(null);
   const [budget, setBudget] = useState(0);
@@ -76,6 +77,41 @@ const Dashboard = () => {
         setGeminiTips("Sorry, we were unable to fetch response from Gemini")
       }
     };
+
+
+    const handleGemini2 = async () => {
+      const userProfile = profileData
+        ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
+        : "No user profile available.";
+
+      console.log(profileData);
+
+      const prompt = `${userProfile} Can you give the user's risk level and describe it in just one liner`;
+
+      try {
+        const response = await axios.post(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
+          {
+            "contents": [
+              {
+                "parts": [
+                  {
+                    "text": prompt
+                  }
+                ]
+              }
+            ]
+          }
+        );
+
+        const botResponse = response.data.candidates[0].content.parts[0].text;
+        setRiskLevel(botResponse);
+      } catch (error) {
+        console.error('Error sending message:', error);
+        setRiskLevel("Sorry, we were unable to fetch response from Gemini")
+      }
+    };
+  
   
 
   const getSavingsBadge = (budget, moneySpent) => {
@@ -126,7 +162,7 @@ const Dashboard = () => {
   const progress = savingsProgress(budget, moneySpent);
 
   return (
-    <div className="font-sans p-8 bg-gray-100 min-h-screen">
+    <div className="font-sans p-8 bg-gray-100 min-h-screen ml-[35vh]">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">Welcome</h1>
         <h2 className="text-2xl text-gray-600 mt-2">Badge: {getSavingsBadge(budget, moneySpent)}</h2>
@@ -162,6 +198,16 @@ const Dashboard = () => {
           {geminiTips}
         </ul>
       </div>
+
+      <div>
+        <h1>Risk Level</h1>
+        <button onClick={handleGemini2} className='bg-black text-white'>Get risk level</button>
+        <div>{RiskLevel}</div>
+
+      </div>
+
+
+
     </div>
   );
 };

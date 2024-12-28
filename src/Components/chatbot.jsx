@@ -64,7 +64,7 @@ function App() {
       try {
         setLoading(true);
         const response = await axios.post(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM}`,
           {
             "contents": [
               {
@@ -91,8 +91,8 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] ">
-      <div className="flex justify-between items-center w-full px-8">
-        <h1 className="mb-8 font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
+      <div className="flex gap-10 justify-center items-center justify-content w-full px-8 mb-8">
+        <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
         <select
           className="p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
           value={language}
