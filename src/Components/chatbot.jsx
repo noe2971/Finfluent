@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { db, auth } from '../config/firebase'; // Assuming firebase is already set up
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import LanguageSelector from './language';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -76,6 +77,7 @@ function App() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] ">
       <h1 className="mb-8 font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
+      <LanguageSelector></LanguageSelector>
       <div className="bg-white w-[95vh] shadow-lg rounded-lg overflow-hidden">
         <div className="p-8 h-[65vh] overflow-y-auto">
           {messages.map((msg, index) => (
