@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { db, auth } from '../config/firebase'; // Assuming firebase is already set up
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import LanguageSelector from './language';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -64,7 +65,7 @@ function App() {
       try {
         setLoading(true);
         const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM}`,
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
           {
             "contents": [
               {
