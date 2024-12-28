@@ -1,12 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { doc, getDoc } from 'firebase/firestore';
+import { db, auth } from '../config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Stocks = () => {
     const [stocks] = useState(['AAPL', 'MSFT', 'GOOGL', 'AMZN']);
     const [selectedStock, setSelectedStock] = useState('AAPL');
     const [stockData, setStockData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [profileData, setProfileData] = useState(null);
+    const [Recommendations, setRecommendations] = useState();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            fetchUserProfile(user.uid);
+          }
+        });
+        return () => unsubscribe();
+      }, []);
+
+    
+      const fetchUserProfile = async (uid) => {
+        const userDoc = await getDoc(doc(db, 'users', uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setProfileData(data);
+        }
+      };
+
+      const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
+
+  const handleGemini = async () => {
+      const userProfile = profileData
+        ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
+        : "No user profile available.";
+
+      console.log(profileData);
+
+      const prompt = `${userProfile} Suggest me stock options based on my profile and the stock performance from the stocks list in the following format and arrange stocks in {stock_name}: {strong buy, buy, sell}, giving each stock one unique parameter and Don't give any extra text: ${stocks}`;
+
+      try {
+        const response = await axios.post(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
+          {
+            "contents": [
+              {
+                "parts": [
+                  {
+                    "text": prompt
+                  }
+                ]
+              }
+            ]
+          }
+        );
+
+        const botResponse = response.data.candidates[0].content.parts[0].text;
+        setRecommendations(botResponse);
+      } catch (error) {
+        console.error('Error sending message:', error);
+        setRecommendations("Sorry, we were unable to fetch response from Gemini")
+      }
+    };
+
+
+
+
 
     const apiKey = 'SGYOVB61J5NBNEPO';  
 
@@ -80,8 +143,9 @@ const Stocks = () => {
                 </div>
             </div>
       <div className="w-1/3 bg-gray-900 p-4 overflow-y-auto">
-        <h3 className="text-xl font-bold mb-4">Recent Stock Recommendations</h3>
-        <div className="bg-gray-800 p-4 rounded-lg mb-4">
+        <h3 className="text-xl font-bold mb-4" onClick={handleGemini}>Recent Stock Recommendations</h3>
+        <button className='bg-white text-black p-3 mb-10 mt-4 rounded-sm' onClick={handleGemini}>Get Them</button>
+        {/* <div className="bg-gray-800 p-4 rounded-lg mb-4">
           <p className="font-semibold">AAPL: <span className="text-green-500">Strong Buy</span></p>
         </div>
         <div className="bg-gray-800 p-4 rounded-lg mb-4">
@@ -89,9 +153,10 @@ const Stocks = () => {
         </div>
         <div className="bg-gray-800 p-4 rounded-lg mb-4">
           <p className="font-semibold">GOOGL: <span className="text-yellow-400">Hold</span></p>
-        </div>
+        </div> */}
         <div className="bg-gray-800 p-4 rounded-lg mb-4">
-          <p className="font-semibold">AMZN: <span className="text-red-500">Sell</span></p>
+          {/* <p className="font-semibold">AMZN: <span className="text-red-500">Sell</span></p> */}
+          {Recommendations}
         </div>
       </div>
     </div>
