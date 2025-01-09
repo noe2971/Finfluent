@@ -43,75 +43,71 @@ const Dashboard = () => {
 
   const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-
   const handleGemini = async () => {
-      const userProfile = profileData
-        ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
-        : "No user profile available.";
+    const userProfile = profileData
+      ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
+      : "No user profile available.";
 
-      console.log(profileData);
+    console.log(profileData);
 
-      const prompt = `${userProfile} User Question: Give me 3 concise financial tips`;
+    const prompt = `${userProfile} User Question: Give me 3 concise financial tips`;
 
-      try {
-        const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
-          {
-            "contents": [
-              {
-                "parts": [
-                  {
-                    "text": prompt
-                  }
-                ]
-              }
-            ]
-          }
-        );
+    try {
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+        {
+          "contents": [
+            {
+              "parts": [
+                {
+                  "text": prompt
+                }
+              ]
+            }
+          ]
+        }
+      );
 
-        const botResponse = response.data.candidates[0].content.parts[0].text;
-        setGeminiTips(botResponse);
-      } catch (error) {
-        console.error('Error sending message:', error);
-        setGeminiTips("Sorry, we were unable to fetch response from Gemini");
-      }
-    };
+      const botResponse = response.data.candidates[0].content.parts[0].text;
+      setGeminiTips(botResponse);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setGeminiTips("Sorry, we were unable to fetch response from Gemini");
+    }
+  };
 
+  const handleGemini2 = async () => {
+    const userProfile = profileData
+      ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
+      : "No user profile available.";
 
-    const handleGemini2 = async () => {
-      const userProfile = profileData
-        ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
-        : "No user profile available.";
+    console.log(profileData);
 
-      console.log(profileData);
+    const prompt = `${userProfile} Can you give the user's risk level and describe it in just one liner`;
 
-      const prompt = `${userProfile} Can you give the user's risk level and describe it in just one liner`;
+    try {
+      const response = await axios.post(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
+        {
+          "contents": [
+            {
+              "parts": [
+                {
+                  "text": prompt
+                }
+              ]
+            }
+          ]
+        }
+      );
 
-      try {
-        const response = await axios.post(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
-          {
-            "contents": [
-              {
-                "parts": [
-                  {
-                    "text": prompt
-                  }
-                ]
-              }
-            ]
-          }
-        );
-
-        const botResponse = response.data.candidates[0].content.parts[0].text;
-        setRiskLevel(botResponse);
-      } catch (error) {
-        console.error('Error sending message:', error);
-        setRiskLevel("Sorry, we were unable to fetch response from Gemini")
-      }
-    };
-  
-  
+      const botResponse = response.data.candidates[0].content.parts[0].text;
+      setRiskLevel(botResponse);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setRiskLevel("Sorry, we were unable to fetch response from Gemini")
+    }
+  };
 
   const getSavingsBadge = (budget, moneySpent) => {
     const savings = budget - moneySpent;
@@ -138,7 +134,7 @@ const Dashboard = () => {
     labels: expenses.map(exp => exp.name),
     datasets: [{
       data: expenses.map(exp => exp.amount),
-      backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFFF33'],
+      backgroundColor: ['#1E3A8A', '#3B82F6', '#2563EB', '#1D4ED8', '#0F172A'], 
     }]
   };
 
@@ -148,7 +144,7 @@ const Dashboard = () => {
       {
         label: 'Income vs Expenses',
         data: [salary, moneySpent],
-        backgroundColor: ['#4CAF50', '#FF6347'],
+        backgroundColor: ['#0A1172', '#0F172A'], 
       },
     ],
   };
@@ -161,7 +157,7 @@ const Dashboard = () => {
   const progress = savingsProgress(budget, moneySpent);
 
   return (
-    <div className="font-sans p-8 bg-gradient-to-b from-[#172554] to-[#bae6fd] min-h-screen ml-60">
+    <div className="flex flex-col items-center min-h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-semibold text-white">Welcome</h1>
         <h2 className="text-2xl text-white mt-2">Badge: {getSavingsBadge(budget, moneySpent)}</h2>
@@ -170,30 +166,29 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Expense Breakdown */}
-        <div className="bg-white p-10 rounded-lg shadow-md h-[50vh] flex ">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Expense Breakdown</h3>
+        <div className="bg-white p-10 rounded-lg shadow-md h-[50vh] flex w-88 ml-16">
+          <h3 className="text-xl font-semibold text-gray-800">Expense Breakdown</h3>
           <Pie className='' data={expenseData} />
         </div>
 
         {/* Income vs Expenses */}
-        <div className="bg-white p-4 rounded-lg shadow-md">
+        <div className="bg-white p-4 rounded-lg shadow-md mr-16">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Income vs Expenses</h3>
           <Bar data={incomeExpenseData} />
         </div>
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mb-8 text-center">
-  <div className="flex justify-center gap-40  ml-80 items-center space-x-6 mb-4">
-    <h3 className="text-xl font-semibold text-gray-800 ml-14">Risk Level</h3>
-    <button 
-      onClick={handleGemini2} 
-      className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out">
-      Calculate Risk Level
-    </button>
-  </div>
-  <div>{RiskLevel}</div>
-</div>
-
+        <div className="flex justify-center gap-40  ml-80 items-center space-x-6 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 ml-14">Risk Level</h3>
+          <button 
+            onClick={handleGemini2} 
+            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out">
+            Calculate Risk Level
+          </button>
+        </div>
+        <div>{RiskLevel}</div>
+      </div>
 
       {/* Savings Progress */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-8 text-center">
@@ -203,20 +198,19 @@ const Dashboard = () => {
       </div>
 
       {/* Gemini Tips */}
-      
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-  <div className="flex justify-center gap-40 ml-80 items-center space-x-6 mb-4">
-    <h3 className="text-xl font-semibold text-gray-800 mr-4">Gemini Tips for Today</h3>
-    <div 
-      onClick={handleGemini} 
-      className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out cursor-pointer">
-      Get tips
-    </div>
-  </div>
-  <ul className="list-disc pl-6 text-gray-700">
-    {geminiTips}
-  </ul>
-</div>
+        <div className="flex justify-center gap-40 ml-80 items-center space-x-6 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mr-4">Gemini Tips for Today</h3>
+          <div 
+            onClick={handleGemini} 
+            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out cursor-pointer">
+            Get tips
+          </div>
+        </div>
+        <ul className="list-disc pl-6 text-gray-700">
+          {geminiTips}
+        </ul>
+      </div>
 
     </div>
   );
