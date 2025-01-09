@@ -157,7 +157,7 @@ const Dashboard = () => {
   const progress = savingsProgress(budget, moneySpent);
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8">
+    <div className="flex flex-col items-center  w-[100%] ml-[18vh] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-semibold text-white">Welcome</h1>
         <h2 className="text-2xl text-white mt-2">Badge: {getSavingsBadge(budget, moneySpent)}</h2>

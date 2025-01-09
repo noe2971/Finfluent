@@ -97,57 +97,62 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-[100%] ml-[18vh]">
+    <div className="flex flex-col ml-[18vh] items-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-full px-4 sm:px-6 md:px-8 py-8">
       <ToastContainer />
-      <form onSubmit={handleSubmit} className="bg-blue-600 shadow-lg rounded-lg p-6 max-w-md w-full text-white">
-        <h2 className="text-2xl font-medium mb-6 text-center bg-gray-800 h-16 grid place-items-center">Profile Builder</h2>
-
-        <div className="mb-4">
-          <label className="block font-medium">Name:</label>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-gray-700"
+      >
+        <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">Profile Builder</h2>
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Name:</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 block w-full p-2 rounded bg-blue-50 text-blue-900"
+            className="block w-full p-3 rounded-lg bg-gray-100 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your name"
           />
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Age:</label>
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Age:</label>
           <input
             type="number"
             name="age"
             value={formData.age}
             onChange={handleChange}
-            className="mt-1 block w-full p-2 rounded bg-blue-50 text-blue-900"
+            className="block w-full p-3 rounded-lg bg-gray-100 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your age"
           />
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Salary:</label>
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Salary:</label>
           <input
             type="number"
             name="salary"
             value={formData.salary}
             onChange={handleChange}
-            className="mt-1 block w-full p-2 rounded bg-blue-50 text-blue-900"
+            className="block w-full p-3 rounded-lg bg-gray-100 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your salary"
           />
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Big Expenses:</label>
-          <div className="flex flex-wrap gap-2 mt-1">
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Big Expenses:</label>
+          <div className="flex flex-wrap gap-2 mt-2">
             {["House loan", "Car loan", "Education loan", "Children", "Other"].map((option) => (
               <button
                 type="button"
                 key={option}
                 onClick={() => handleMultipleChoice("bigExpenses", option)}
-                className={`p-2 rounded ${
-                  formData.bigExpenses.includes(option) ? "bg-green-500" : "bg-blue-400"
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-300 ease-in-out ${
+                  formData.bigExpenses.includes(option)
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-gray-700 hover:bg-blue-500"
                 }`}
               >
                 {option}
@@ -155,17 +160,19 @@ const Profile = () => {
             ))}
           </div>
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Current Investments:</label>
-          <div className="flex flex-wrap gap-2 mt-1">
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Current Investments:</label>
+          <div className="flex flex-wrap gap-2 mt-2">
             {["Stocks", "Bonds", "Crypto", "Gold", "Real Estate", "Other"].map((option) => (
               <button
                 type="button"
                 key={option}
                 onClick={() => handleMultipleChoice("currentInvestments", option)}
-                className={`p-2 rounded ${
-                  formData.currentInvestments.includes(option) ? "bg-green-500" : "bg-blue-400"
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-300 ease-in-out ${
+                  formData.currentInvestments.includes(option)
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-gray-700 hover:bg-blue-500"
                 }`}
               >
                 {option}
@@ -173,17 +180,19 @@ const Profile = () => {
             ))}
           </div>
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Desired Investments:</label>
-          <div className="flex flex-wrap gap-2 mt-1">
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Desired Investments:</label>
+          <div className="flex flex-wrap gap-2 mt-2">
             {["Stocks", "Bonds", "Crypto", "Gold", "Real Estate", "Other"].map((option) => (
               <button
                 type="button"
                 key={option}
                 onClick={() => handleMultipleChoice("desiredInvestments", option)}
-                className={`p-2 rounded ${
-                  formData.desiredInvestments.includes(option) ? "bg-green-500" : "bg-blue-400"
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-300 ease-in-out ${
+                  formData.desiredInvestments.includes(option)
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-gray-700 hover:bg-blue-500"
                 }`}
               >
                 {option}
@@ -191,25 +200,29 @@ const Profile = () => {
             ))}
           </div>
         </div>
-
-        <div className="mb-4">
-          <label className="block font-medium">Financial Goals:</label>
+  
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Financial Goals:</label>
           <input
             type="text"
             name="goals"
             value={formData.goals}
             onChange={handleChange}
-            className="mt-1 block w-full p-2 rounded bg-blue-50 text-blue-900"
+            className="block w-full p-3 rounded-lg bg-gray-100 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your goals"
           />
         </div>
-
-        <button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded w-full">
+  
+        <button
+          type="submit"
+          className="w-full py-3 rounded-lg bg-blue-600 text-white text-lg font-semibold transition-all duration-300 ease-in-out hover:bg-blue-700"
+        >
           Save Profile
         </button>
       </form>
     </div>
   );
+  
 };
 
 export default Profile;
