@@ -183,11 +183,17 @@ const Dashboard = () => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mb-8 text-center">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4">Risk Level</h3>
-        <div onClick={handleGemini}>Get Risk Level</div>
-        <ul className="list-disc pl-6 text-gray-700">
-        </ul>
-      </div>
+  <div className="flex justify-center gap-40  ml-80 items-center space-x-6 mb-4">
+    <h3 className="text-xl font-semibold text-gray-800 ml-14">Risk Level</h3>
+    <button 
+      onClick={handleGemini2} 
+      className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out">
+      Calculate Risk Level
+    </button>
+  </div>
+  <div>{RiskLevel}</div>
+</div>
+
 
       {/* Savings Progress */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-8 text-center">
@@ -197,22 +203,20 @@ const Dashboard = () => {
       </div>
 
       {/* Gemini Tips */}
+      
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4">Gemini Tips for Today</h3>
-        <div onClick={handleGemini}>Get tips</div>
-        <ul className="list-disc pl-6 text-gray-700">
-          {geminiTips}
-        </ul>
-      </div>
-
-      <div>
-        <h1>Risk Level</h1>
-        <button onClick={handleGemini2} className='bg-black text-white'>Get risk level</button>
-        <div>{RiskLevel}</div>
-
-      </div>
-
-
+  <div className="flex justify-center gap-40 ml-80 items-center space-x-6 mb-4">
+    <h3 className="text-xl font-semibold text-gray-800 mr-4">Gemini Tips for Today</h3>
+    <div 
+      onClick={handleGemini} 
+      className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out cursor-pointer">
+      Get tips
+    </div>
+  </div>
+  <ul className="list-disc pl-6 text-gray-700">
+    {geminiTips}
+  </ul>
+</div>
 
     </div>
   );
