@@ -5,7 +5,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen w-[100%]">
+    <div className="bg-gray-900 text-white w-full min-h-screen m-0 h-0 ">
       {/* Header */}
       <header>
         <nav className="bg-blue-800 flex justify-center py-4 space-x-12 w-full">
