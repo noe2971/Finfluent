@@ -45,7 +45,7 @@ const Stocks = () => {
 
       try {
         const response = await axios.post(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCNqDY6yZHszGuFLGdXY09O2LerPZ5cGZM",
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
           {
             "contents": [
               {
@@ -106,60 +106,55 @@ const Stocks = () => {
     }, [selectedStock]);
 
     return (
-        <div className="flex h-screen w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white">
-            <div className="flex flex-col items-center justify-center w-full">
-                <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-                    <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Stock Data Visualization</h2>
-
-                    <div className="mb-6">
-                        <label className="block text-lg font-medium text-blue-700 mb-2">Select a Stock</label>
-                        <select
-                            value={selectedStock}
-                            onChange={(e) => setSelectedStock(e.target.value)}
-                            className="w-full p-2 border border-blue-400 rounded-lg bg-blue-100 text-blue-700"
-                        >
-                            {stocks.map((stock) => (
-                                <option key={stock} value={stock}>
-                                    {stock}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="mt-8">
-                        {loading ? (
-                            <p className="text-center text-blue-900">Loading stock data...</p>
-                        ) : (
-                            <ResponsiveContainer width="95%" height={400}> 
-                                <LineChart data={stockData}>
-                                    <XAxis dataKey="date" tick={{ fill: 'gray-800' }} />
-                                    <YAxis domain={['auto', 'auto']} tick={{ fill: 'gray-800' }} />
-                                    <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 51, 102, 0.8)', color: 'white' }} />
-                                    <CartesianGrid stroke="#111827" strokeDasharray="5 5" />
-                                    <Line type="monotone" dataKey="close" stroke="#111827 " strokeWidth={3} dot={false} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                </div>
-            </div>
-      <div className="w-1/3 bg-gray-900 p-4 overflow-y-auto">
-        <h3 className="text-xl font-bold mb-4" onClick={handleGemini}>Recent Stock Recommendations</h3>
-        <button className='bg-white text-black p-3 mb-10 mt-4 rounded-sm' onClick={handleGemini}>Get Them</button>
-        {/* <div className="bg-gray-800 p-4 rounded-lg mb-4">
-          <p className="font-semibold">AAPL: <span className="text-green-500">Strong Buy</span></p>
-        </div>
-        <div className="bg-gray-800 p-4 rounded-lg mb-4">
-          <p className="font-semibold">MSFT: <span className="text-green-500">Buy</span></p>
-        </div>
-        <div className="bg-gray-800 p-4 rounded-lg mb-4">
-          <p className="font-semibold">GOOGL: <span className="text-yellow-400">Hold</span></p>
-        </div> */}
-        <div className="bg-gray-800 p-4 rounded-lg mb-4">
-          {/* <p className="font-semibold">AMZN: <span className="text-red-500">Sell</span></p> */}
-          {Recommendations}
-        </div>
+      <div className="flex h-screen w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white">
+          <div className="flex flex-col items-center justify-center w-full">
+              <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
+                  <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Stock Data Visualization</h2>
+  
+                  <div className="mb-6">
+                      <label className="block text-lg font-medium text-blue-700 mb-2">Select a Stock</label>
+                      <select
+                          value={selectedStock}
+                          onChange={(e) => setSelectedStock(e.target.value)}
+                          className="w-full p-2 border border-blue-400 rounded-lg bg-blue-100 text-blue-700"
+                      >
+                          {stocks.map((stock) => (
+                              <option key={stock} value={stock}>
+                                  {stock}
+                              </option>
+                          ))}
+                      </select>
+                  </div>
+                  <div className="mt-8">
+                      {loading ? (
+                          <p className="text-center text-blue-900">Loading stock data...</p>
+                      ) : (
+                          <ResponsiveContainer width="95%" height={400}>
+                              <LineChart data={stockData}>
+                                  <XAxis dataKey="date" tick={{ fill: 'gray-800' }} />
+                                  <YAxis domain={['auto', 'auto']} tick={{ fill: 'gray-800' }} />
+                                  <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 51, 102, 0.8)', color: 'white' }} />
+                                  <CartesianGrid stroke="#111827" strokeDasharray="5 5" />
+                                  <Line type="monotone" dataKey="close" stroke="#111827 " strokeWidth={3} dot={false} />
+                              </LineChart>
+                          </ResponsiveContainer>
+                      )}
+                  </div>
+              </div>
+          </div>
+          <div className="w-1/3 p-4 overflow-y-auto sticky bg-gradient-to-b from-[#151E3D] to-[#123456]">
+              <h3 className="text-xl font-bold" onClick={handleGemini}>Recent Stock Recommendations</h3>
+              <button
+                  className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out cursor-pointer mb-6"
+                  onClick={handleGemini}
+              >
+                  Get Them
+              </button>
+              <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                  {Recommendations}
+              </div>
+          </div>
       </div>
-    </div>
   );
 };
 
