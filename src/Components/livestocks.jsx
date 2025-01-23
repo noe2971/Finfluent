@@ -124,11 +124,14 @@ const Stocks = () => {
                               </option>
                           ))}
                       </select>
+                    
+
                   </div>
                   <div className="mt-8">
                       {loading ? (
                           <p className="text-center text-blue-900">Loading stock data...</p>
                       ) : (
+                        <>
                           <ResponsiveContainer width="95%" height={400}>
                               <LineChart data={stockData}>
                                   <XAxis dataKey="date" tick={{ fill: 'gray-800' }} />
@@ -138,6 +141,14 @@ const Stocks = () => {
                                   <Line type="monotone" dataKey="close" stroke="#111827 " strokeWidth={3} dot={false} />
                               </LineChart>
                           </ResponsiveContainer>
+
+                          <a target='blank' href={`https://stockanalysis.com/stocks/${selectedStock}/`} >
+                         
+                          <div className='text-blue-500 font-bold text-[3vh] flex items-center justify-center pt-[5vh]'>{selectedStock}</div>
+
+                          </a>
+
+                          </>
                       )}
                   </div>
               </div>
