@@ -97,13 +97,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col ml-[18vh] items-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-full px-4 sm:px-6 md:px-8 py-8">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#172554] to-[#bae6fd] w-full px-4 sm:px-6 md:px-8 py-8">
       <ToastContainer />
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-gray-700"
+        className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-gray-700 l-[10vh]"
       >
-        <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">Profile Builder</h2>
+        <h2 className="text-3xl font-semibold m mb-8 text-center text-gray-800">Profile Builder</h2>
   
         <div className="mb-6">
           <label className="block font-medium text-gray-700 mb-2">Name:</label>
