@@ -12,6 +12,7 @@ import Sidebar from "./Components/sidebar";
 import Home from "./Components/home";
 import AboutUs from "./Components/aboutus";
 import Features from "./Components/features";
+import Lessons from "./Components/lessons";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,38 +42,35 @@ function App() {
 
   return (
     <Router>
-      {/* Sidebar is only shown when the user is logged in */}
-      {user && <Sidebar handleLogout={handleLogout} />}
-
-      <Routes>
-        {/* Default route - Dashboard */}
-        <Route path="/" element={user ? <Home /> : <Home/>} />
-        <Route path="/home" element={<Home/>}/>
-        <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/features" element={<Features />} />
-
-        {/* Login route */}
-        <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-
-        {/* Protected routes (accessible only when logged in) */}
-        {user && (
-          <>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/livestocks" element={<Livestocks />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/finances" element={<Finances />} />
-           
+    {user && <Sidebar handleLogout={handleLogout} />}
+  
+    <Routes>
+      {/* Default route - Redirect to Dashboard if user is logged in */}
+      <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
       
-          </>
-        )}
-
-<Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
-
-
-       
-      </Routes>
-    </Router>
+      {/* Redirect to Dashboard for other routes if user is logged in */}
+      <Route path="/home" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
+      <Route path="/aboutus" element={user ? <Navigate to="/dashboard" replace /> : <AboutUs />} />
+      <Route path="/features" element={user ? <Navigate to="/dashboard" replace /> : <Features />} />
+  
+      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+  
+      {/* Protected routes (accessible only when logged in) */}
+      {user && (
+        <>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/livestocks" element={<Livestocks />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/finances" element={<Finances />} />
+          <Route path='/lessons' element={<Lessons/>}/>
+        </>
+      )}
+  
+      {/* Catch-all route */}
+      <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+    </Routes>
+  </Router>
   );
 }
 
