@@ -12,7 +12,7 @@ export default function Sidebar({handleLogout}) {
                 <img src={logo} alt="Logo" className="h-40 ml-2" /> 
             </div>
             <div className='space-y-4 text-l'>
-                {['Dashboard', 'Profile', 'Chatbot', 'Finances', 'Live Stocks'].map((item) => (
+                {['Dashboard', 'Profile', 'Chatbot', 'Finances', 'Live Stocks','Logout'].map((item) => (
                     <div 
                         key={item}
                         className="cursor-pointer p-4 hover:bg-blue-700 rounded-lg shadow transition-shadow ease-in-out duration-300"
@@ -21,9 +21,6 @@ export default function Sidebar({handleLogout}) {
                         {item}
                     </div>
                 ))}
-            <button onClick={handleLogout} className="text-white hover:text-blue-300">
-            Logout
-          </button>
             </div>
         </div>
     );

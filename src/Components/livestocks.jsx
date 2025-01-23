@@ -6,7 +6,13 @@ import { db, auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const Stocks = () => {
-    const [stocks] = useState(['AAPL', 'MSFT', 'GOOGL', 'AMZN']);
+    const [stocks] = useState([
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'BRK.B', 'JPM', 'V', 
+        'UNH', 'HD', 'PG', 'XOM', 'KO', 'PEP', 'NFLX', 'ADBE', 'CSCO', 'PFE', 'T', 
+        'NKE', 'INTC', 'MRK', 'DIS', 'AMD', 'WMT', 'BAC', 'CRM', 'ABT', 'CVX', 'LLY', 
+        'QCOM', 'MCD', 'ORCL', 'BABA', 'DHR', 'UPS', 'COST', 'PM', 'TMO', 'TXN', 
+        'SCHW', 'HON', 'AMGN', 'LIN', 'MDT', 'PYPL', 'IBM', 'AVGO', 'SBUX', 'NOW', 
+        'SPGI', 'DE', 'SPY', 'VOO', 'QQQ', 'VTI', 'IVV', 'DIA', 'IWM', 'VEA', 'VNQ']);
     const [selectedStock, setSelectedStock] = useState('AAPL');
     const [stockData, setStockData] = useState([]);
     const [loading, setLoading] = useState(false);
