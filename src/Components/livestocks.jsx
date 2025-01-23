@@ -33,7 +33,6 @@ const Stocks = () => {
 
       const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-
   const handleGemini = async () => {
       const userProfile = profileData
         ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
@@ -66,7 +65,6 @@ const Stocks = () => {
         setRecommendations("Sorry, we were unable to fetch response from Gemini")
       }
     };
-
 
 
 
@@ -159,3 +157,4 @@ const Stocks = () => {
 };
 
 export default Stocks;
+
