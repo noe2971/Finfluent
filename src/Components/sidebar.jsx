@@ -21,9 +21,6 @@ export default function Sidebar({handleLogout}) {
                         {item}
                     </div>
                 ))}
-            <button onClick={handleLogout} className="text-white hover:text-blue-300">
-            Logout
-          </button>
             </div>
         </div>
     );
