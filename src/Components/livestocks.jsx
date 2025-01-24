@@ -75,7 +75,7 @@ const Stocks = () => {
 
 
 
-    const apiKey = 'SGYOVB61J5NBNEPO';  
+    const apiKey = 'VV5OHWQR81LJIW6F';  
 
     useEffect(() => {
         const fetchStockData = async () => {

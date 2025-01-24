@@ -5,7 +5,7 @@ const Lessons = () =>{
     const lessons = [
         {
           title: "Crypto Unlocked: Navigating the World of Digital Assets",
-          link: "/crypto-investing",
+          link: "https://www.simplilearn.com/tutorials/blockchain-tutorial/what-is-cryptocurrency",
         },
         {
           title: "Gold: A Timeless Investment for Financial Security",
@@ -13,39 +13,39 @@ const Lessons = () =>{
         },
         {
           title: "Stock Market 101: From Basics to Building a Winning Portfolio",
-          link: "/stock-market-101",
+          link: "https://zerodha.com/varsity/module/introduction-to-stock-markets/",
         },
         {
           title: "The Power of Mutual Funds: Simplified Investing for Everyone",
-          link: "/mutual-funds",
+          link: "https://www.investopedia.com/terms/m/mutualfund.asp",
         },
         {
           title: "Real Estate: Turning Property into Profit",
-          link: "/real-estate",
+          link: "https://www.investopedia.com/articles/mortgages-real-estate/11/make-money-in-real-estate.asp",
         },
         {
           title: "Fixed Deposits and Bonds: Low-Risk Options for Steady Returns",
-          link: "/fixed-deposits",
+          link: "https://www.bajajfinserv.in/investments/fixed-deposits-vs-investment-bonds",
         },
         {
           title: "Index Funds: A Passive Path to Wealth",
-          link: "/index-funds",
+          link: "https://www.bankoncube.com/post/passive-income-through-index-funds-tracking-market-performance",
         },
         {
           title: "Retirement Planning: Building Your Financial Freedom Fund",
-          link: "/retirement-planning",
+          link: "https://www.livemint.com/money/personal-finance/retirement-planning-how-to-build-a-strong-financial-foundation-early-mutual-funds-sips-11736752076873.html",
         },
         {
           title: "The Art of Diversification: Balancing Risk and Reward",
-          link: "/diversification",
+          link: "https://www.goldstonefinancialgroup.com/the-art-of-investment-planning-balancing-risk-and-reward/",
         },
       ];
 
     return(
         <>
-        <div className="w-[82%] ml-[20%] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8 ">
+        <div className="min-h-screen w-[82%] ml-[20%] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8 ">
 
-            <h1 className="text-[4vh] text-white font-bold">Finance Lessons</h1>
+            <h1 className="text-[4vh] text-center text-white font-bold">Finance Lessons</h1>
 
             <div className="flex flex-wrap justify-center">
       {lessons.map((lesson, index) => (
