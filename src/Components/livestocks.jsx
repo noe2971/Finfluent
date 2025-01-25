@@ -5,7 +5,10 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
+
+
 const Stocks = () => {
+
     const [stocks] = useState([
         'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'BRK.B', 'JPM', 'V', 
         'UNH', 'HD', 'PG', 'XOM', 'KO', 'PEP', 'NFLX', 'ADBE', 'CSCO', 'PFE', 'T', 
@@ -13,6 +16,11 @@ const Stocks = () => {
         'QCOM', 'MCD', 'ORCL', 'BABA', 'DHR', 'UPS', 'COST', 'PM', 'TMO', 'TXN', 
         'SCHW', 'HON', 'AMGN', 'LIN', 'MDT', 'PYPL', 'IBM', 'AVGO', 'SBUX', 'NOW', 
         'SPGI', 'DE', 'SPY', 'VOO', 'QQQ', 'VTI', 'IVV', 'DIA', 'IWM', 'VEA', 'VNQ']);
+
+        const gptKey = import.meta.env.VITE_GPT_KEY;
+        const apiUrl = "https://api.openai.com/v1/chat/completions";
+      
+
     const [selectedStock, setSelectedStock] = useState('AAPL');
     const [stockData, setStockData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -37,7 +45,7 @@ const Stocks = () => {
         }
       };
 
-      const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+      
 
   const handleGemini = async () => {
       const userProfile = profileData
@@ -46,25 +54,24 @@ const Stocks = () => {
 
       console.log(profileData);
 
-      const prompt = `${userProfile} Suggest me stock options based on my profile and the stock performance from the stocks list in the following format and arrange stocks in {stock_name}: {strong buy, buy, sell}, giving each stock one unique parameter and Don't give any extra text: ${stocks}`;
+      const prompt = `${userProfile} Suggest me top 3 stock options mentioned in the list and classify them in buy, strong buy and sell. Give reasoning. Give ans in very short text and one line ${stocks}`;
 
       try {
-        const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+        const result = await axios.post(
+          apiUrl,
           {
-            "contents": [
-              {
-                "parts": [
-                  {
-                    "text": prompt
-                  }
-                ]
-              }
-            ]
+            model: "gpt-4",
+            messages: [{ role: "user", content: prompt }],
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${gptKey}`,
+            },
           }
         );
 
-        const botResponse = response.data.candidates[0].content.parts[0].text;
+        const botResponse = result.data.choices[0].message.content;
         setRecommendations(botResponse);
       } catch (error) {
         console.error('Error sending message:', error);
@@ -89,10 +96,14 @@ const Stocks = () => {
 
                 const timeSeriesData = response.data['Time Series (Daily)'];
 
+                
+
                 if (!timeSeriesData) {
                     console.error('Time Series Data is undefined. Check the API response structure.');
                     return; 
                 }
+
+
 
                 const formattedData = Object.keys(timeSeriesData).map(date => ({
                     date,

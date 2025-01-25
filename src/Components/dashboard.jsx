@@ -19,6 +19,10 @@ const Dashboard = () => {
   const [expenseList, setExpenseList] = useState([]);
   const [salary, setSalary] = useState(0);
 
+  const apiKey = import.meta.env.VITE_GPT_KEY;
+  const apiUrl = "https://api.openai.com/v1/chat/completions";
+
+
   // Fetch daily tips when the component is mounted
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -41,7 +45,7 @@ const Dashboard = () => {
     }
   };
 
-  const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  
 
   const handleGemini = async () => {
     const userProfile = profileData
@@ -53,26 +57,24 @@ const Dashboard = () => {
     const prompt = `${userProfile} User Question: Give me 3 concise financial tips`;
 
     try {
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+      const result = await axios.post(
+        apiUrl,
         {
-          "contents": [
-            {
-              "parts": [
-                {
-                  "text": prompt
-                }
-              ]
-            }
-          ]
+          model: "gpt-4",
+          messages: [{ role: "user", content: prompt }],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
         }
       );
-
-      const botResponse = response.data.candidates[0].content.parts[0].text;
+      const botResponse = result.data.choices[0].message.content;
       setGeminiTips(botResponse);
     } catch (error) {
       console.error('Error sending message:', error);
-      setGeminiTips("Sorry, we were unable to fetch response from Gemini");
+      setGeminiTips("Sorry, we were unable to fetch response");
     }
   };
 
@@ -84,28 +86,28 @@ const Dashboard = () => {
     console.log(profileData);
 
     const prompt = `${userProfile} Can you give the user's risk level and describe it in just one liner`;
+    console.log(prompt)
 
     try {
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+      const result = await axios.post(
+        apiUrl,
         {
-          "contents": [
-            {
-              "parts": [
-                {
-                  "text": prompt
-                }
-              ]
-            }
-          ]
+          model: "gpt-4",
+          messages: [{ role: "user", content: prompt }],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
         }
       );
 
-      const botResponse = response.data.candidates[0].content.parts[0].text;
+      const botResponse = result.data.choices[0].message.content;
       setRiskLevel(botResponse);
     } catch (error) {
       console.error('Error sending message:', error);
-      setRiskLevel("Sorry, we were unable to fetch response from Gemini")
+      setRiskLevel("Sorry, we were unable to fetch response")
     }
   };
 
@@ -200,7 +202,7 @@ const Dashboard = () => {
       {/* Gemini Tips */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <div className="flex justify-center gap-40 ml-80 items-center space-x-6 mb-4">
-          <h3 className="text-xl font-semibold text-gray-800 mr-4">Gemini Tips for Today</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mr-4">GPT Tips for Today</h3>
           <div 
             onClick={handleGemini} 
             className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out cursor-pointer">
