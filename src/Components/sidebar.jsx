@@ -21,6 +21,7 @@ export default function Sidebar({handleLogout}) {
                         {item}
                     </div>
                 ))}
+                <div className='ml-4' onClick={handleLogout}>Logout</div>
             </div>
         </div>
     );

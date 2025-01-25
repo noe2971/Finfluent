@@ -14,7 +14,8 @@ function App() {
   const [profileData, setProfileData] = useState(null); // Store profile data here
   const [language, setLanguage] = useState('English'); // Default language
 
-  const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const apiKey = import.meta.env.VITE_GPT_KEY;
+  const apiUrl = "https://api.openai.com/v1/chat/completions";
 
   // Supported languages
   const languages = [
@@ -60,26 +61,24 @@ function App() {
 
       const prompt = `Language: ${language}. ${userProfile} User Question: ${input}`;
       console.log(prompt)
-      console.log(googleApiKey)
 
       try {
         setLoading(true);
-        const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
+        const result = await axios.post(
+          apiUrl,
           {
-            "contents": [
-              {
-                "parts": [
-                  {
-                    "text": prompt
-                  }
-                ]
-              }
-            ]
+            model: "gpt-4",
+            messages: [{ role: "user", content: prompt }],
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${apiKey}`,
+            },
           }
         );
 
-        const botResponse = response.data.candidates[0].content.parts[0].text;
+        const botResponse = result.data.choices[0].message.content;
         setLoading(false);
         setMessages([...newMessages, { text: botResponse, user: false }]);
       } catch (error) {
