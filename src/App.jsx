@@ -13,6 +13,7 @@ import Home from "./Components/home";
 import AboutUs from "./Components/aboutus";
 import Features from "./Components/features";
 import Lessons from "./Components/lessons";
+import Information from "./Components/information"; // Import the new Information component
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,49 +31,45 @@ function App() {
   // Logout function
   const handleLogout = () => {
     signOut(auth)
-      .then(() => 
-      {
-
+      .then(() => {
         setUser(null); // Reset the user state
-      }
-      
-    )
+      })
       .catch((error) => console.error("Error logging out: ", error));
   };
 
   return (
     <Router>
-    {user && <Sidebar handleLogout={handleLogout} />}
-  
-    <Routes>
-      {/* Default route - Redirect to Dashboard if user is logged in */}
-      <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
-      
-      {/* Redirect to Dashboard for other routes if user is logged in */}
-      <Route path="/home" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
-      <Route path="/aboutus" element={user ? <Navigate to="/dashboard" replace /> : <AboutUs />} />
-      <Route path="/features" element={user ? <Navigate to="/dashboard" replace /> : <Features />} />
-  
-      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
-  
-      {/* Protected routes (accessible only when logged in) */}
-      {user && (
-        <>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chatbot" element={<Chatbot />} />
-          <Route path="/livestocks" element={<Livestocks />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/finances" element={<Finances />} />
-          <Route path='/lessons' element={<Lessons/>}/>
-        </>
-      )}
-  
-      {/* Catch-all route */}
-      <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
-    </Routes>
-  </Router>
+      {user && <Sidebar handleLogout={handleLogout} />}
+
+      <Routes>
+        {/* Default route - Redirect to Dashboard if user is logged in */}
+        <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
+        
+        {/* Redirect to Dashboard for other routes if user is logged in */}
+        <Route path="/home" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
+        <Route path="/aboutus" element={user ? <Navigate to="/dashboard" replace /> : <AboutUs />} />
+        <Route path="/features" element={user ? <Navigate to="/dashboard" replace /> : <Features />} />
+
+        <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+
+        {/* Protected routes (accessible only when logged in) */}
+        {user && (
+          <>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/chatbot" element={<Chatbot />} />
+            <Route path="/livestocks" element={<Livestocks />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/finances" element={<Finances />} />
+            <Route path="/lessons" element={<Lessons />} />
+            <Route path="/information" element={<Information />} /> {/* New route added here */}
+          </>
+        )}
+
+        {/* Catch-all route */}
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-
