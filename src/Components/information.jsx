@@ -13,6 +13,7 @@ const Information = () => {
     const [profileData, setProfileData] = useState(null);
     const [stockInfo, setStockInfo] = useState('');
     const [loading, setLoading] = useState(false);
+    const [stockRecommendations, setStockRecommendations] = useState([]);
     
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -41,7 +42,7 @@ const fetchUserProfile = async (uid) => {
             const userProfile = profileData
             ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
             : "No user profile available.";
-            const prompt = `${userProfile}Using data provided and additional research say whether ${stockSymbol} would be a good or a bad investment for them personally, provide reasoning for your decision. Present useful financial ratios (explaining what they indicate), recent trends, market performance, and a short analysis to support your argument Use simple terms and explain every complex term you use. Link every piece of evidence and every ratio to why it is relevant to user and why due to it they should make a decision. Dont make your response too long, restrict yourself to 200 words. Dont use vague Words like could use is likely to be instead. Dont refer to the stock by its ticker name. Use the company name`;
+            const prompt = `${userProfile}Using data provided and additional research say whether ${stockSymbol} would be a good or a bad investment for them personally, provide reasoning for your decision. Present useful financial ratios (explaining what they indicate), recent trends, market performance, and a short analysis to support your argument Use simple terms and explain every complex term you use. Link every piece of evidence and every ratio to why it is relevant to user and why due to it they should make a decision. Dont make your response too long, restrict yourself to 200 words. Dont use vague Words like could use is likely to be instead. Dont refer to the stock by its ticker name. Use the company name. Mske sure all the data you give is as up to data as possible, from 2025. Thie financial ratios annd dagta mmust be accurate , cross verify it with many sourcses and ensure also they are all updated to the current day and time of this prompt. Mention sources for this financial data.`;
 
             try {
                 const result = await axios.post(
@@ -72,8 +73,8 @@ const fetchUserProfile = async (uid) => {
     }, [stockSymbol]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-[#123456] to-[#0e213a] text-white p-8">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-3xl">
+        <div className="flex flex-col justify-center h-screen bg-gradient-to-b from-[#123456] to-[#0e213a] text-white p-8">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-3xl ml-96">
                 <h2 className="text-3xl font-bold text-center mb-6">{stockSymbol} Stock Information</h2>
                 {loading ? (
                     <p className="text-center text-gray-400">Fetching stock details...</p>

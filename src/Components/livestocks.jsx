@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 const Stocks = () => {
     const gptKey = import.meta.env.VITE_GPT_KEY;
+    const alphaVantageKey = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your actual Alpha Vantage API key
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
     const [selectedStock, setSelectedStock] = useState('AAPL');
@@ -62,8 +63,33 @@ const Stocks = () => {
         }
     };
 
-    const fetchTickerSymbol = async (stockName) => {
-        const prompt = `Find the ticker symbol of the stock "${stockName}". Only respond with the ticker symbol and nothing else.`;
+    const fetchStockData = async (stockSymbol) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`https://www.alphavantage.co/query`, {
+                params: {
+                    function: 'TIME_SERIES_DAILY',
+                    symbol: stockSymbol,
+                    apikey: alphaVantageKey,
+                },
+            });
+
+            const data = response.data['Time Series (Daily)'];
+            const formattedData = Object.keys(data).map((date) => ({
+                date,
+                close: parseFloat(data[date]['4. close']),
+            }));
+            const reversedData = formattedData.reverse();
+            setStockData(reversedData);
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchStockRecommendations = async (userProfile) => {
+        const prompt = `Given the user's profile data: ${JSON.stringify(userProfile)}, recommend the top ten stocks from this list: ${stocks.join(", ")}. Label them from 'Must Buy' to 'Strong Buy' to 'Buy' in that order. Provide no other information.`;
         try {
             const response = await axios.post(
                 apiUrl,
@@ -78,13 +104,55 @@ const Stocks = () => {
                     },
                 }
             );
-            const tickerSymbol = response.data.choices[0].message.content.trim();
-            return tickerSymbol;
+    
+            // Process the response to display the recommendations
+            if (response.data?.choices?.[0]?.message?.content) {
+                return response.data.choices[0].message.content.trim().split("\n");
+            } else {
+                console.error("Unexpected response format:", response.data);
+                return [];
+            }
         } catch (error) {
-            console.error('Error fetching ticker symbol:', error);
+            console.error("Error fetching stock recommendations:", error);
+            return [];
+        }
+    };
+    
+    const fetchTickerSymbol = async (stockName) => {
+        const prompt = `Find the ticker symbol of the stock "${stockName}". Only respond with the ticker symbol and nothing else.`;
+        try {
+            const response = await axios.post(
+                apiUrl,
+                {
+                    model: "gpt-4",
+                    messages: [{ role: "user", content: prompt }],
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${gptKey}`, // Fixed incorrect string interpolation
+                    },
+                }
+            );
+    
+            // Validate the response structure and extract the ticker symbol
+            if (response.data?.choices?.[0]?.message?.content) {
+                return response.data.choices[0].message.content.trim();
+            } else {
+                console.error("Unexpected response format:", response.data);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching ticker symbol:", error.message);
             return null;
         }
     };
+    
+    useEffect(() => {
+        if (selectedStock) {
+            fetchStockData(selectedStock);
+        }
+    }, [selectedStock]);
 
     const handleAddStock = async () => {
         if (!newStockName) {
@@ -148,6 +216,7 @@ const Stocks = () => {
                             <p className="text-center text-blue-900">Loading stock data...</p>
                         ) : (
                             <>
+                                {/* Graph */}
                                 <ResponsiveContainer width="95%" height={400}>
                                     <LineChart data={stockData}>
                                         <XAxis dataKey="date" tick={{ fill: 'gray-800' }} />
