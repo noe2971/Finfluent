@@ -6,12 +6,12 @@ import { db, auth } from '../config/firebase';
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
-const Stocks = () => {
+const ETF = () => {
     const gptKey = import.meta.env.VITE_GPT_KEY;
     const alphaVantageKey = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your actual Alpha Vantage API key
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    const [selectedStock, setSelectedStock] = useState('AAPL');
+    const [selectedStock, setSelectedStock] = useState('SPY');
     const [stockData, setStockData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [stocks, setStocks] = useState([]);
@@ -20,9 +20,9 @@ const Stocks = () => {
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
 
-    const defaultStocks = [
-        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'UNH', 'V',
-        'RELIANCE', 'TCS', 'HDFC', 'INFY', 'ICICIBANK'
+    const defaultETFS = [
+        'SPY', 'VOO', 'QQQ', 'IVV', 'DIA', 'EFA', 'IEMG', 'VTI', 'SCHB', 'XLF',
+        'NIFTYBEES', 'BANKBEES', 'ICICINIFTY', 'SBINIFTY', 'UTINIFTY'
       ];
 
     // Fetch stocks from Firestore
@@ -47,7 +47,7 @@ const Stocks = () => {
             
             // Combine default stocks with fetched ones to ensure they are all present
             const allStocks = [
-                ...defaultStocks, // Add default stocks
+                ...defaultETFS, // Add default stocks
                 ...fetchedStocks.map((stock) => stock.name), // Add user-specific stocks
             ];
 
@@ -85,7 +85,7 @@ const Stocks = () => {
     };
 
     const fetchStockRecommendations = async (userProfile) => {
-        const prompt = `Given the user's profile data: ${JSON.stringify(userProfile)}, recommend the top ten stocks from this list: ${stocks.join(", ")}. Label them from 'Must Buy' to 'Strong Buy' to 'Buy' in that order. Provide no other information.`;
+        const prompt = `Given the user's profile data: ${JSON.stringify(userProfile)}, recommend the top ten ETFs from this list: ${stocks.join(", ")}. Label them from 'Must Buy' to 'Strong Buy' to 'Buy' in that order. Provide no other information.`;
         try {
             const response = await axios.post(
                 apiUrl,
@@ -194,7 +194,7 @@ const Stocks = () => {
         <div className="flex h-screen w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white">
             <div className="flex flex-col items-center justify-center w-full">
                 <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-                    <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Top Stocks</h2>
+                    <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Top ETFs</h2>
 
                     <div className="flex justify-center items-center gap-6 mb-6">
                      <button 
@@ -210,7 +210,7 @@ const Stocks = () => {
                     </div>
                     <div>
 
-                        <label className="block text-lg font-medium text-blue-700 mb-2">Select a Stock</label>
+                        <label className="block text-lg font-medium text-blue-700 mb-2">Select an ETF</label>
                         <select
                             value={selectedStock}
                             onChange={(e) => setSelectedStock(e.target.value)}
@@ -231,7 +231,7 @@ const Stocks = () => {
 
                     <div className="mt-8">
                         {loading ? (
-                            <p className="text-center text-blue-900">Loading stock data...</p>
+                            <p className="text-center text-blue-900">Loading ETF data...</p>
                         ) : (
                             <>
                                 {/* Graph */}
@@ -247,7 +247,7 @@ const Stocks = () => {
 
                                 {/* Add Stock Button and Input Field Below Graph */}
                                 <div className="mt-6">
-                                    <label className="block text-lg font-medium text-blue-700 mb-2">Add a Stock</label>
+                                    <label className="block text-lg font-medium text-blue-700 mb-2">Add an ETF </label>
                                     <div className="flex items-center gap-2">
                                         <input
                                             type="text"
@@ -275,7 +275,5 @@ const Stocks = () => {
     );
 };
 
-export default Stocks;
-
-
+export default ETF;
 

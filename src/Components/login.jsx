@@ -53,7 +53,7 @@ const Login= () => {
   return (
     <>
       <header>
-        <nav className="bg-white flex justify-center py-4 space-x-12 w-full">
+        <nav className="bg-blue-800 text-white flex justify-center py-4 space-x-12 w-full">
           <button onClick={() => window.location.href = "/home"} className="hover:underline">Home</button>
           <button onClick={() => window.location.href = "/aboutus"} className="hover:underline">About Us</button>
           <button onClick={() => window.location.href = "/features"} className="hover:underline">Features</button>
@@ -61,7 +61,7 @@ const Login= () => {
         </nav>
       </header>
     
-    <div className="flex items-center justify-center h-screen bg-[#172554] ">
+    <div className="flex items-center justify-center h-screen bg-gray-900 ">
       
       <div className="bg-white p-8 shadow-lg rounded-lg w-96">
          

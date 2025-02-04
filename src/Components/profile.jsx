@@ -185,7 +185,7 @@ const Profile = () => {
         </div>
   
         <div className="mb-6">
-          <label className="block font-medium text-gray-700 mb-2">Salary:</label>
+          <label className="block font-medium text-gray-700 mb-2">Annual Salary:</label>
           <input
             type="number"
             name="salary"
@@ -351,7 +351,6 @@ const Profile = () => {
     />
   )}
 </div>
-
 
 <div className="mb-6">
   <label className="block font-medium text-gray-700 mb-2">Do you have an Emergency Fund?</label>

@@ -8,7 +8,7 @@ const AboutUs = () => {
           <button onClick={() => window.location.href = "/home"} className="hover:underline">Home</button>
           <button onClick={() => window.location.href = "/aboutus"} className="hover:underline">About Us</button>
           <button onClick={() => window.location.href = "/features"} className="hover:underline">Features</button>
-          <button onClick={() => window.location.href = "/login"} className="hover:underline">Sign Up</button>
+          <button onClick={() => window.location.href = "/login"} className="hover:underline">Login</button>
         </nav>
       </header>
 

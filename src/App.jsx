@@ -13,7 +13,9 @@ import Home from "./Components/home";
 import AboutUs from "./Components/aboutus";
 import Features from "./Components/features";
 import Lessons from "./Components/lessons";
-import Information from "./Components/information"; // Import the new Information component
+import Information from "./Components/information"; 
+import ETF from "./Components/ETF"; 
+// Import the new Information component
 
 function App() {
   const [user, setUser] = useState(null);
@@ -61,7 +63,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/finances" element={<Finances />} />
             <Route path="/lessons" element={<Lessons />} />
-            <Route path="/information" element={<Information />} /> {/* New route added here */}
+            <Route path="/information" element={<Information />} /> 
+            <Route path="/etfs" element={<ETF />} />
           </>
         )}
 
