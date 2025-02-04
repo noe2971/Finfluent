@@ -30,7 +30,7 @@ export default function Sidebar() {
                     { label: 'Profile', path: '/profile' },
                     { label: 'Chatbot', path: '/chatbot' },
                     { label: 'Finances', path: '/finances' },
-                    { label: 'Investment', path: '/etf' }, 
+                    { label: 'Investment', path: '/etfs' }, 
                     { label: 'Lessons', path: '/lessons' },
                     { label: 'Logout', path: 'logout' }
                 ].map((item) => (
