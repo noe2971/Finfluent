@@ -32,6 +32,7 @@ export default function Sidebar() {
                     { label: 'Finances', path: '/finances' },
                     { label: 'Investment', path: '/etfs' }, 
                     { label: 'Lessons', path: '/lessons' },
+                    { label: 'Health', path: '/health' },
                     { label: 'Logout', path: 'logout' }
                 ].map((item) => (
                     <div 

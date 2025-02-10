@@ -10,6 +10,7 @@ const Profile = () => {
     name: "",
     age: "",
     salary: "",
+    costs: "",
     bigExpenses: [],
     liabilities: [],
     currentInvestments: [],
@@ -40,6 +41,7 @@ const Profile = () => {
         // Clean up single-character entries in specific fields
         const cleanedData = {
           ...data,
+          costs: cleanArray(data.costs),
           bigExpenses: cleanArray(data.bigExpenses),
           liabilities: cleanArray(data.liabilities),
           currentInvestments: cleanArray(data.currentInvestments),
@@ -138,6 +140,7 @@ const Profile = () => {
           insurance: cleanArray(formData.insurance),
           savings: formData.savings,  
           emergencyFund: formData.emergencyFund,
+          costs: cleanArray(formData.costs),
         };
   
         await setDoc(doc(db, "users", userId), cleanedFormData);
@@ -195,7 +198,19 @@ const Profile = () => {
             placeholder="Enter your salary"
           />
         </div>
-  
+
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Monthly Expenses:</label>
+          <input
+            type="number"
+            name="costs"
+            value={formData.costs}
+            onChange={handleChange}
+            className="block w-full p-3 rounded-lg bg-gray-100 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Approximate monthly costs"
+          />
+        </div>
+        
         <div className="mb-6">
           <label className="block font-medium text-gray-700 mb-2">Big Expenses:</label>
           <div className="flex flex-wrap gap-2 mt-2">
