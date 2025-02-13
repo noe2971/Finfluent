@@ -166,26 +166,27 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Expense Breakdown */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-[500px] h-[400px] ml-8">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-[500px] h-[450px] ml-8">
   <h3 className="text-xl font-semibold text-gray-800 mb-4">Expense Breakdown</h3>
-  <Pie 
+  <Pie
     data={expenseData} 
     options={{ 
-      responsive: false, 
-      maintainAspectRatio: false 
+      responsive: true, 
+      maintainAspectRatio: false
     }} 
   />
 </div>
 
         {/* Income vs Expenses */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-[500px] h-[400px] ml-12">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-[500px] h-[450px] ml-12">
         
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Income vs Expenses</h3>
           <Bar 
               data={incomeExpenseData} 
               options={{ 
-                responsive: false, 
+                responsive: true, 
                 maintainAspectRatio: false 
+                
               }} 
               />
         </div>
