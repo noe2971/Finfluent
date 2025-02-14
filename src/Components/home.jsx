@@ -101,22 +101,22 @@ const home = () => {
                 Home
               </button>
               <button 
+                onClick={() => scrollToSection('about')}
+                className="text-sm text-white hover:text-blue-400 transition-colors"
+              >
+                About us
+              </button>
+              <button 
                 onClick={() => scrollToSection('features')}
                 className="text-sm text-white hover:text-blue-400 transition-colors"
               >
                 Features
               </button>
               <button 
-                onClick={() => scrollToSection('about')}
-                className="text-sm text-white hover:text-blue-400 transition-colors"
-              >
-                About Us
-              </button>
-              <button 
                 onClick={() => scrollToSection('contact')}
                 className="text-sm text-white hover:text-blue-400 transition-colors"
               >
-                Contact
+                Contact us
               </button>
               <Link to="/login">
                 <motion.button
@@ -124,7 +124,7 @@ const home = () => {
                   whileTap={{ scale: 0.95 }}
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium"
                 >
-                  Sign In
+                  Sign in
                 </motion.button>
               </Link>
             </div>
@@ -190,7 +190,46 @@ const home = () => {
         </div>
       </div>
 
-      <div id="features" className="py-20 bg-gray-800">
+      <div id="about" className="py-20 bg-gray-800">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Mission</h2>
+            <p className="text-white max-w-3xl mx-auto">
+              Wealthify was founded with a mission to democratize financial literacy and empower everyone to make informed financial decisions. According to an article by Mint, only about 3% of the Indian population invests in the stock market, compared to 13% of the Chinese population and 55% of the US. This number highlights the extent of this issue expecially in India. Most people do not know the importance of investing their money and are not taught why it is important in school. 
+            </p>
+            <br />
+            <p className="text-white max-w-3xl mx-auto">
+              In India especially, many don't know how to invest and what to invest in. Additionally, many don't track their spendings and savings. Therefore, ultimately lacking the ability to build a financially stable life. This platform gives everyone, no matter their financial background, the opportunity to track their savings, get personalized investment suggestions and learn about key financial concepts all for free. We aim to give everyone the ability to expand their financial knowledge annd make smart financial decisions.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            <div className="bg-gray-900 p-8 rounded-xl">
+              <h3 className="text-xl font-semibold text-blue-400 mb-4">About me</h3>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-blue-600/10 p-3 rounded-lg">
+                    <span className="text-blue-400">NC</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-white">Noel Juby Chandy</p>
+                    <p className="text-sm text-white">Founder</p>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div className="text-sm text-white ml"> I am a high school student living in Mumbai studing in grade 11 at The Cathedral and John Connon School. I have always had a passion for coding and finance. This is why I decided to create this platform to promote fiancial literacy, a cause close to my heart. I strongly believe in what I am doing here and I believe that creating this website has give me the opportunity to hone my creativity, problem solving and web development skills.   </div>
+            </div>
+            <div className="bg-gray-900 p-8 rounded-xl">
+              <h3 className="text-xl font-semibold text-blue-400 mb-4">Our Values</h3>
+              <p className="text-white"> 
+                Our platform is built on the principles of transparency, inclusivity, and empowerment. Through innovative technology and user-friendly tools, we're breaking down the barriers to financial literacy and helping individuals build a secure financial future. Our commitment to innovation and user-centric design drives us to create meaningful solutions for all. 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="features" className="py-20 bg-gray-900">
         <div className="container mx-auto px-6">
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
@@ -235,7 +274,7 @@ const home = () => {
         </div>
       </div>
 
-      <div className="py-20 bg-gray-900">
+      <div className="py-20 bg-gray-800">
         <div className="container mx-auto px-6">
           <motion.div 
             variants={containerVariants}
@@ -270,52 +309,13 @@ const home = () => {
         </div>
       </div>
 
-      <div id="about" className="py-20 bg-gray-900">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Mission</h2>
-            <p className="text-white max-w-3xl mx-auto">
-              Wealthify was founded with a mission to democratize financial literacy and empower everyone to make informed financial decisions. According to an article by Mint, only about 3% of the Indian population invests in the stock market, compared to 13% of the Chinese population and 55% of the US. This number highlights the extent of this issue expecially in India. Most people do not know the importance of investing their money and are not taught why it is important in school. 
-            </p>
-            <br />
-            <p className="text-white max-w-3xl mx-auto">
-              In India especially, many don't know how to invest and what to invest in. Additionally, many don't track their spendings and savings. Therefore, ultimately lacking the ability to build a financially stable life. This platform gives everyone, no matter their financial background, the opportunity to track their savings, get personalized investment suggestions and learn about key financial concepts all for free. We aim to give everyone the ability to expand their financial knowledge annd make smart financial decisions.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-            <div className="bg-gray-800 p-8 rounded-xl">
-              <h3 className="text-xl font-semibold text-blue-400 mb-4">About me</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="bg-blue-600/10 p-3 rounded-lg">
-                    <span className="text-blue-400">NC</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-white">Noel Juby Chandy</p>
-                    <p className="text-sm text-white">Founder</p>
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div className="text-sm text-white ml"> I am a high school student living in Mumbai studing in grade 11 at The Cathedral and John Connon School. I have always had a passion for coding and finance. This is why I decided to create this platform to promote fiancial literacy, a cause close to my heart. I strongly believe in what I am doing here and I believe that creating this website has give me the opportunity to hone my creativity, problem solving and web development skills.   </div>
-            </div>
-            <div className="bg-gray-800 p-8 rounded-xl">
-              <h3 className="text-xl font-semibold text-blue-400 mb-4">Our Values</h3>
-              <p className="text-white"> 
-                Our platform is built on the principles of transparency, inclusivity, and empowerment. Through innovative technology and user-friendly tools, we're breaking down the barriers to financial literacy and helping individuals build a secure financial future. Our commitment to innovation and user-centric design drives us to create meaningful solutions for all. 
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="contact" className="py-20 bg-gray-800">
+      <div id="contact" className="py-20 bg-gray-900">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-400 mb-4">Contact Us</h2>
             <p className="text-white">Get in touch with us</p>
           </div>
-          <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8">
+          <div className="max-w-2xl mx-auto bg-gray-800 rounded-xl p-8">
             <div className="flex flex-col items-center justify-center space-y-6">
               <div className="flex items-center space-x-3">
                 <Mail className="w-6 h-6 text-blue-400" />
@@ -334,7 +334,7 @@ const home = () => {
         </div>
       </div>
 
-      <footer className="border-t border-blue-900/20">
+      <footer className="border-t border-blue-900/20 bg-gray-800">
         <div className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">

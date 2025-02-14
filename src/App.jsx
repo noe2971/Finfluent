@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import Dashboard from "./Components/dashboard";
 import Chatbot from "./Components/chatbot";
@@ -13,9 +18,9 @@ import Home from "./Components/home";
 import AboutUs from "./Components/aboutus";
 import Features from "./Components/features";
 import Lessons from "./Components/lessons";
-import Information from "./Components/information"; 
-import ETF from "./Components/ETF"; 
-// Import the new Information component
+import Information from "./Components/information";
+import ETF from "./Components/ETF";
+import Health from "./Components/health"; // Import the Health component
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,36 +46,45 @@ function App() {
 
   return (
     <Router>
-      {user && <Sidebar handleLogout={handleLogout} />}
+      {user ? (
+        // When user is logged in, wrap the sidebar and main content in a flex container.
+        <div className="flex">
+          <Sidebar handleLogout={handleLogout} />
+          <main className="flex-1 p-4">
+            <Routes>
+              {/* Default route */}
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/home" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/aboutus" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/features" element={<Navigate to="/dashboard" replace />} />
 
-      <Routes>
-        {/* Default route - Redirect to Dashboard if user is logged in */}
-        <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
-        
-        {/* Redirect to Dashboard for other routes if user is logged in */}
-        <Route path="/home" element={user ? <Navigate to="/dashboard" replace /> : <Home />} />
-        <Route path="/aboutus" element={user ? <Navigate to="/dashboard" replace /> : <AboutUs />} />
-        <Route path="/features" element={user ? <Navigate to="/dashboard" replace /> : <Features />} />
+              {/* Protected routes */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/chatbot" element={<Chatbot />} />
+              <Route path="/livestocks" element={<Livestocks />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/finances" element={<Finances />} />
+              <Route path="/lessons" element={<Lessons />} />
+              <Route path="/information" element={<Information />} />
+              <Route path="/etfs" element={<ETF />} />
+              <Route path="/health" element={<Health />} /> {/* New route for Health */}
 
-        <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
-
-        {/* Protected routes (accessible only when logged in) */}
-        {user && (
-          <>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/livestocks" element={<Livestocks />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/finances" element={<Finances />} />
-            <Route path="/lessons" element={<Lessons />} />
-            <Route path="/information" element={<Information />} /> 
-            <Route path="/etfs" element={<ETF />} />
-          </>
-        )}
-
-        {/* Catch-all route */}
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
-      </Routes>
+              {/* Catch-all route */}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </main>
+        </div>
+      ) : (
+        // When user is not logged in, show public routes.
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      )}
     </Router>
   );
 }
