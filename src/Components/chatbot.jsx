@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { db, auth } from '../config/firebase';
+import { db, auth } from '../config/firebase'; // Assuming firebase is already set up
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import LanguageSelector from './language';
@@ -11,12 +11,13 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState(null);
-  const [language, setLanguage] = useState('English');
+  const [profileData, setProfileData] = useState(null); // Store profile data here
+  const [language, setLanguage] = useState('English'); // Default language
 
   const apiKey = import.meta.env.VITE_GPT_KEY;
   const apiUrl = "https://api.openai.com/v1/chat/completions";
 
+  // Supported languages
   const languages = [
     "English",
     "Hindi",
@@ -31,10 +32,11 @@ function App() {
     "Odia",
   ];
 
+  // Fetch user profile data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        fetchUserProfile(user.uid);
+        fetchUserProfile(user.uid); // Fetch user profile when logged in
       }
     });
     return () => unsubscribe();
@@ -58,7 +60,7 @@ function App() {
         : "No user profile available.";
 
       const prompt = `Language: ${language}. ${userProfile} User Question: ${input}`;
-      console.log(prompt);
+      console.log(prompt)
 
       try {
         setLoading(true);
@@ -88,11 +90,9 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full bg-gradient-to-b from-[#172554] to-[#bae6fd] p-4">
-      <div className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center items-center w-full px-4 mb-8">
-        <h1 className="font-bold font-sans text-3xl md:text-5xl drop-shadow-lg text-white">
-          Finance Advisor
-        </h1>
+    <div className="flex flex-col justify-center items-center min-h-screen w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] ">
+      <div className="flex gap-10 justify-center items-center justify-content w-full px-8 mb-8">
+        <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
         <select
           className="p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
           value={language}
@@ -105,18 +105,26 @@ function App() {
           ))}
         </select>
       </div>
-      <div className="bg-white w-full max-w-md shadow-lg rounded-lg overflow-hidden">
-        <div className="p-4 h-80 md:h-[65vh] overflow-y-auto">
+      <div className="bg-white w-[95vh] shadow-lg rounded-lg overflow-hidden">
+        <div className="p-8 h-[65vh] overflow-y-auto">
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.user ? 'justify-end' : 'justify-start'} mb-2`}>
               <div className={`rounded-lg p-3 shadow-md overflow-x-hidden flex flex-wrap font-sans text-left ${msg.user ? 'bg-blue-600 text-white' : 'bg-blue-100'}`}>
-                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                <ReactMarkdown>
+                  {msg.text}
+                </ReactMarkdown>
               </div>
             </div>
           ))}
           {loading && (
-            <div className="flex items-center justify-center py-4">
-              <span className="text-blue-500">Loading...</span>
+            <div className="wrapper">
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="shadow"></div>
+              <div className="shadow"></div>
+              <div className="shadow"></div>
+              <span className="text-blue-500">Loading</span>
             </div>
           )}
         </div>
