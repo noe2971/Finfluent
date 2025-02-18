@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement
+  ArcElement,
 } from 'chart.js';
 import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
@@ -163,106 +163,106 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="flex-1 p-6">
         {/* Header */}
-        <div className="max-w-6xl mx-auto ml-64 p-6">
-        <header className="h-16 bg-white flex items-center justify-between px-6 shadow-md border-b border-gray-200 ml-8">
-          <h1 className="text-2xl font-semibold text-blue-900">Main Dashboard</h1>
-          <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">
-              U
+        <div className="max-w-6xl mx-auto p-6 ml-0 md:ml-64">
+          <header className="h-16 bg-white flex items-center justify-between px-6 shadow-md border-b border-gray-200 ml-0 md:ml-8">
+            <h1 className="text-2xl font-semibold text-blue-900">Main Dashboard</h1>
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">
+                U
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        {/* Content Wrapper */}
-        <div className="mt-6 space-y-6">
-          {/* Top Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 ml-8">
-            <div className="bg-white p-4 shadow rounded-xl">
-              <h2 className="text-sm text-blue-900">Earnings</h2>
-              <p className="text-2xl font-bold text-black">${Number(budget).toLocaleString()}</p>
-            </div>
-            <div className="bg-white p-4 shadow rounded-xl">
-              <h2 className="text-sm text-blue-900">Spent this month</h2>
-              <p className="text-2xl font-bold text-black">${Number(moneySpent).toLocaleString()}</p>
-            </div>
-            <div className="bg-white p-4 shadow rounded-xl">
-              <h2 className="text-sm text-blue-900">Salary</h2>
-              <p className="text-2xl font-bold text-black">${Number(salary).toLocaleString()}</p>
-            </div>
-            <div className="bg-white p-4 shadow rounded-xl">
-              <h2 className="text-sm text-blue-900">Your Badge</h2>
-              <p className="text-2xl font-bold text-black">{getSavingsBadge(budget, moneySpent)}</p>
-            </div>
-          </div>
-
-          {/* Charts */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Expense Breakdown */}
-            <div className="bg-white p-6 shadow rounded-xl h-[400px] ml-8">
-              <h3 className="text-lg font-semibold text-blue-900 mb-4">Expense Breakdown</h3>
-              <div className="relative w-full h-[calc(100%-2rem)]">
-                <Pie
-                  data={expenseData}
-                  options={{ responsive: true, maintainAspectRatio: false }}
-                  className="absolute inset-0"
-                />
+          {/* Content Wrapper */}
+          <div className="mt-6 space-y-6">
+            {/* Top Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 ml-0 md:ml-8">
+              <div className="bg-white p-4 shadow rounded-xl">
+                <h2 className="text-sm text-blue-900">Earnings</h2>
+                <p className="text-2xl font-bold text-black">${Number(budget).toLocaleString()}</p>
+              </div>
+              <div className="bg-white p-4 shadow rounded-xl">
+                <h2 className="text-sm text-blue-900">Spent this month</h2>
+                <p className="text-2xl font-bold text-black">${Number(moneySpent).toLocaleString()}</p>
+              </div>
+              <div className="bg-white p-4 shadow rounded-xl">
+                <h2 className="text-sm text-blue-900">Salary</h2>
+                <p className="text-2xl font-bold text-black">${Number(salary).toLocaleString()}</p>
+              </div>
+              <div className="bg-white p-4 shadow rounded-xl">
+                <h2 className="text-sm text-blue-900">Your Badge</h2>
+                <p className="text-2xl font-bold text-black">{getSavingsBadge(budget, moneySpent)}</p>
               </div>
             </div>
 
-            {/* Income vs Expenses */}
-            <div className="bg-white p-6 shadow rounded-xl h-[400px]">
-              <h3 className="text-lg font-semibold text-blue-900 mb-4">Income vs Expenses</h3>
-              <div className="relative w-full h-[calc(100%-2rem)]">
-                <Bar
-                  data={incomeExpenseData}
-                  options={{ responsive: true, maintainAspectRatio: false }}
-                  className="absolute inset-0"
-                />
+            {/* Charts */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Expense Breakdown */}
+              <div className="bg-white p-6 shadow rounded-xl h-[400px] ml-0 md:ml-8">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">Expense Breakdown</h3>
+                <div className="relative w-full h-[calc(100%-2rem)]">
+                  <Pie
+                    data={expenseData}
+                    options={{ responsive: true, maintainAspectRatio: false }}
+                    className="absolute inset-0"
+                  />
+                </div>
+              </div>
+
+              {/* Income vs Expenses */}
+              <div className="bg-white p-6 shadow rounded-xl h-[400px]">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">Income vs Expenses</h3>
+                <div className="relative w-full h-[calc(100%-2rem)]">
+                  <Bar
+                    data={incomeExpenseData}
+                    options={{ responsive: true, maintainAspectRatio: false }}
+                    className="absolute inset-0"
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Bottom Widgets */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Risk Level */}
-            <div className="bg-white p-6 shadow rounded-xl flex flex-col ml-8">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-blue-900">Risk Level</h3>
-                <button
-                  onClick={handleGemini2}
-                  className="bg-blue-700 text-white px-4 py-1 rounded-md hover:bg-blue-800 transition-colors"
-                >
-                  Calculate
-                </button>
+            {/* Bottom Widgets */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Risk Level */}
+              <div className="bg-white p-6 shadow rounded-xl flex flex-col ml-0 md:ml-8">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-blue-900">Risk Level</h3>
+                  <button
+                    onClick={handleGemini2}
+                    className="bg-blue-700 text-white px-4 py-1 rounded-md hover:bg-blue-800 transition-colors"
+                  >
+                    Calculate
+                  </button>
+                </div>
+                <div className="text-black mt-4">{RiskLevel}</div>
               </div>
-              <div className="text-black mt-4">{RiskLevel}</div>
-            </div>
 
-            {/* Savings Progress */}
-            <div className="bg-white p-6 shadow rounded-xl flex flex-col">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">Savings Progress</h3>
-              <progress value={progress} max="100" className="w-full h-4 rounded-lg bg-gray-300" />
-              <p className="text-sm text-black mt-2">{Math.round(progress)}% of your budget saved!</p>
-            </div>
-
-            {/* GPT Tips */}
-            <div className="bg-white p-6 shadow rounded-xl flex flex-col">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-blue-900">Tips for Today</h3>
-                <button
-                  onClick={handleGemini}
-                  className="bg-blue-700 text-white px-4 py-1 rounded-md hover:bg-blue-800 transition-colors"
-                >
-                  Get Tips
-                </button>
+              {/* Savings Progress */}
+              <div className="bg-white p-6 shadow rounded-xl flex flex-col">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">Savings Progress</h3>
+                <progress value={progress} max="100" className="w-full h-4 rounded-lg bg-gray-300" />
+                <p className="text-sm text-black mt-2">{Math.round(progress)}% of your budget saved!</p>
               </div>
-              {geminiTips && (
-                <ul className="list-disc pl-6 mt-4 space-y-1 text-black">
-                  {geminiTips.split('\n').filter(line => line.trim() !== "").map((tip, index) => (
-                    <li key={index}>{tip.trim()}</li>
-                  ))}
-                </ul>
-              )}
+
+              {/* GPT Tips */}
+              <div className="bg-white p-6 shadow rounded-xl flex flex-col">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-blue-900">Tips for Today</h3>
+                  <button
+                    onClick={handleGemini}
+                    className="bg-blue-700 text-white px-4 py-1 rounded-md hover:bg-blue-800 transition-colors"
+                  >
+                    Get Tips
+                  </button>
+                </div>
+                {geminiTips && (
+                  <ul className="list-disc pl-6 mt-4 space-y-1 text-black">
+                    {geminiTips.split('\n').filter(line => line.trim() !== "").map((tip, index) => (
+                      <li key={index}>{tip.trim()}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>

@@ -27,7 +27,6 @@ export default function Sidebar() {
     }
   };
 
-  // Define the menu items using your titles and paths.
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: User, label: 'Profile', path: '/profile' },
@@ -40,7 +39,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="fixed top-0 left-0 w-64 h-screen bg-gradient-to-b from-[#0A1929] to-[#0041C2] border-r border-blue-900/30 flex flex-col">
+    <div className="fixed top-0 left-0 w-full md:w-64 h-screen bg-gradient-to-b from-[#0A1929] to-[#0041C2] border-r border-blue-900/30 flex flex-col">
       {/* Header */}
       <div className="h-24 flex items-center justify-center border-b border-blue-900/30">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
