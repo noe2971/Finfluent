@@ -227,7 +227,7 @@ const Profile = () => {
     <div className="min-h-screen w-full overflow-auto bg-gradient-to-b from-[#172554] to-[#bae6fd]">
       <ToastContainer />
       {/* Main Container with left margin for side navbar */}
-      <div className="max-w-6xl mx-auto ml-64 p-6">
+      <div className="max-w-6xl mx-auto p-6">
         <div className="max-w-5xl mx-auto p-4">
           {/* Page Title with an icon */}
           <div className="flex items-center justify-center space-x-3 mb-8">

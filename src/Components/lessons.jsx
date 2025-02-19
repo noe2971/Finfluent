@@ -189,7 +189,7 @@ const Lessons = () => {
     else return "Finance Rookie";
   })();
   return (
-    <div className="max-w-4xl mx-auto space-y-4 p-4 ml-80">
+    <div className="max-w-4xl mx-auto space-y-4 p-4">
       {/* Progress Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-[#1E3A8A] to-[#2563EB] p-4 rounded-lg shadow-md">

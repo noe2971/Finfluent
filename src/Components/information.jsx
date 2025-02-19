@@ -74,7 +74,7 @@ const fetchUserProfile = async (uid) => {
 
     return (
         <div className="flex flex-col justify-center h-screen bg-gradient-to-b from-[#123456] to-[#0e213a] text-white p-8">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-3xl ml-96">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-3xl">
                 <h2 className="text-3xl font-bold text-center mb-6">{stockSymbol} Stock Information</h2>
                 {loading ? (
                     <p className="text-center text-gray-400">Fetching stock details...</p>

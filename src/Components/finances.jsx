@@ -127,7 +127,7 @@ function ExpenseTracker() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8">
+    <div className="flex flex-col items-center min-h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8 max-w-4xl mx-auto space-y-4 p-4">
       <h1 className="mb-14 text-6xl font-bold font-sans text-white text-center">
         Expense Tracker
       </h1>

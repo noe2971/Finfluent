@@ -163,8 +163,8 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="flex-1 p-6">
         {/* Header */}
-        <div className="max-w-6xl mx-auto p-6 ml-0 md:ml-64">
-          <header className="h-16 bg-white flex items-center justify-between px-6 shadow-md border-b border-gray-200 ml-0 md:ml-8">
+        <div className="max-w-6xl mx-auto p-6">
+          <header className="h-16 bg-white flex items-center justify-between px-6 shadow-md border-b border-gray-200">
             <h1 className="text-2xl font-semibold text-blue-900">Main Dashboard</h1>
             <div className="flex items-center space-x-4">
               <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">

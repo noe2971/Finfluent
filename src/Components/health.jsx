@@ -252,7 +252,7 @@ Please return your answer in plain text with clearly labeled sections.
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#172554] to-[#bae6fd] p-8 text-gray-800">
       {/* Main container with left margin for sidebar */}
-      <div className="max-w-6xl mx-auto ml-64">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <header className="text-center mb-10">
           <div className="flex items-center justify-center gap-3">

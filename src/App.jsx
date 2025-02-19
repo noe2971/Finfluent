@@ -76,6 +76,7 @@ function App() {
         </div>
       ) : (
         // When user is not logged in, show public routes.
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />

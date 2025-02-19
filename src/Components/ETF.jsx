@@ -264,7 +264,7 @@ Please recommend the top ten ETFs from this list, labeling them from 'Must Buy' 
   };
 
   return (
-    <div className="flex flex-col w-[82%] ml-[18%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white min-h-screen p-4">
+    <div className="flex flex-col w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white min-h-screen p-4 max-w-4xl mx-auto space-y-4">
       {/* Heading & Explanation at the Top */}
 
       <div className="flex flex-col items-center w-full">
