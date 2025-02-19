@@ -15,8 +15,6 @@ import Login from "./Components/login";
 import Profile from "./Components/profile";
 import Sidebar from "./Components/sidebar";
 import Home from "./Components/home";
-import AboutUs from "./Components/aboutus";
-import Features from "./Components/features";
 import Lessons from "./Components/lessons";
 import Information from "./Components/information";
 import ETF from "./Components/ETF";
@@ -55,8 +53,6 @@ function App() {
               {/* Default route */}
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/home" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/aboutus" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/features" element={<Navigate to="/dashboard" replace />} />
 
               {/* Protected routes */}
               <Route path="/dashboard" element={<Dashboard />} />
@@ -80,8 +76,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/aboutus" element={<AboutUs />} />
-          <Route path="/features" element={<Features />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
