@@ -17,7 +17,7 @@ const Login = () => {
   const [email, setEmail]         = useState('');
   const [password, setPassword]   = useState('');
   const [error, setError]         = useState('');
-  const navigate                  = useNavigate();
+  const navigate                = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,28 +52,43 @@ const Login = () => {
         }
 
         // Email is verified, allow login
-        alert("Logged in successfully!");
-        navigate("/profile");
+        alert("Welcome back! You've successfully logged in.");
+        navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.message);
+      if (err.code) {
+        if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+          setError("Account not found. Please sign up first.");
+        } else if (err.code === "auth/wrong-password") {
+          setError("Incorrect password. Please try again.");
+        } else if (err.code === "auth/invalid-email") {
+          setError("The email address is invalid. Please check and try again.");
+        } else if (err.code === "auth/email-already-in-use") {
+          setError("This email is already registered. Please log in or use a different email.");
+        } else if (err.code === "auth/weak-password") {
+          setError("The password is too weak. It must be at least 6 characters long.");
+        } else {
+          setError("An error occurred. Please try again.");
+        }
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
       alert("Google login successful!");
-
-      // If this is a popup window, close it after success
       if (window.opener) {
+        // Close the popup window if it exists
         window.close();
       } else {
-        // Otherwise navigate to profile
-        navigate("/profile");
+        // Otherwise, navigate to the dashboard
+        navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.message);
+      setError("An error occurred during Google login. Please try again.");
     }
   };
 
@@ -184,4 +199,3 @@ const Login = () => {
 };
 
 export default Login;
-

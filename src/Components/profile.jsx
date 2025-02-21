@@ -178,6 +178,12 @@ const Profile = () => {
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Allowed file types: JPEG, PNG, GIF
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Unsupported file format. Please upload a JPEG, PNG, or GIF image.");
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         setFormData((prev) => ({
@@ -188,6 +194,7 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
+  
 
   // Submit form to Firestore with merge option
   const handleSubmit = async (e) => {
