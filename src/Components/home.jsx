@@ -344,11 +344,6 @@ const home = () => {
               </p>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-blue-900/20">
-            <p className="text-sm text-white text-center">
-              © {new Date().getFullYear()} Wealthify. All rights reserved.
-            </p>
-          </div>
         </div>
       </footer>
     </div>

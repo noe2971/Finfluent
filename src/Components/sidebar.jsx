@@ -45,11 +45,11 @@ export default function SidebarLayout({ children }) {
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: User, label: 'Profile', path: '/profile' },
-    { icon: MessageSquare, label: 'Chatbot', path: '/chatbot' },
-    { icon: PieChart, label: 'Finances', path: '/finances' },
+    { icon: MessageSquare, label: 'Finance AI', path: '/chatbot' },
+    { icon: PieChart, label: 'Expenses', path: '/finances' },
     { icon: LineChart, label: 'Investment', path: '/etfs' },
     { icon: BookOpen, label: 'Lessons', path: '/lessons' },
-    { icon: Heart, label: 'Health', path: '/health' },
+    { icon: Heart, label: 'Recommendations', path: '/health' },
     { icon: LogOut, label: 'Logout', path: 'logout' },
   ];
 

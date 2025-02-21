@@ -17,6 +17,7 @@ import Sidebar from "./Components/sidebar";
 import Home from "./Components/home";
 import Lessons from "./Components/lessons";
 import Information from "./Components/information";
+import Infoetf from "./Components/info(etf)";
 import ETF from "./Components/ETF";
 import Health from "./Components/health"; // Import the Health component
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="/finances" element={<Finances />} />
               <Route path="/lessons" element={<Lessons />} />
               <Route path="/information" element={<Information />} />
+              <Route path="/info(etf)" element={<Infoetf />} />
               <Route path="/etfs" element={<ETF />} />
               <Route path="/health" element={<Health />} /> {/* New route for Health */}
 
