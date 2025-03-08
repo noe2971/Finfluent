@@ -217,7 +217,7 @@ const home = () => {
                 </div>
               </div>
               <br />
-              <div className="text-sm text-white ml"> I am a high school student living in Mumbai studing in grade 11 at The Cathedral and John Connon School. I have always had a passion for coding and finance. This is why I decided to create this platform to promote fiancial literacy, a cause close to my heart. I strongly believe in what I am doing here and I believe that creating this website has give me the opportunity to hone my creativity, problem solving and web development skills.   </div>
+              <div className="text-sm text-white ml"> I am a high school student living in Mumbai studying in grade 11 at The Cathedral and John Connon School. I have always had a passion for coding and finance. That is why I decided to create this platform to promote fiancial literacy, a cause close to my heart. I strongly believe in what I am doing here and I believe that creating this website has given me the opportunity to hone my creativity, problem solving and web development skills.   </div>
             </div>
             <div className="bg-gray-900 p-8 rounded-xl">
               <h3 className="text-xl font-semibold text-blue-400 mb-4">Our Values</h3>
