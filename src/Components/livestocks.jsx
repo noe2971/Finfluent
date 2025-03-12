@@ -19,16 +19,43 @@ const Stocks = () => {
   const alphaVantageKey = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your actual key
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
-  // Default list of stocks
+  // Default list of stock ticker symbols.
   const defaultStocks = [
     'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'UNH', 'V',
     'RELIANCE', 'TCS', 'HDFC', 'INFY', 'ICICIBANK'
   ];
 
-  const [selectedStock, setSelectedStock] = useState('AAPL');
+  // Mapping from ticker symbol to full company name.
+  const stockFullNames = {
+    AAPL: "Apple Inc.",
+    MSFT: "Microsoft Corporation",
+    GOOGL: "Alphabet Inc.",
+    AMZN: "Amazon.com, Inc.",
+    TSLA: "Tesla, Inc.",
+    NVDA: "NVIDIA Corporation",
+    META: "Meta Platforms, Inc.",
+    JPM: "JPMorgan Chase & Co.",
+    UNH: "UnitedHealth Group Inc.",
+    V: "Visa Inc.",
+    RELIANCE: "Reliance Industries Limited",
+    TCS: "Tata Consultancy Services",
+    HDFC: "HDFC Bank Limited",
+    INFY: "Infosys Limited",
+    ICICIBANK: "ICICI Bank Limited"
+  };
+
+  // Convert defaultStocks into an array of objects { symbol, name }
+  const defaultStockOptions = defaultStocks.map(symbol => ({
+    symbol,
+    name: stockFullNames[symbol] || symbol
+  }));
+
+  // State: selectedStock holds the ticker symbol.
+  const [selectedStock, setSelectedStock] = useState(defaultStockOptions[0].symbol);
+  // stocks is an array of { symbol, name } objects.
+  const [stocks, setStocks] = useState(defaultStockOptions);
   const [stockData, setStockData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [stocks, setStocks] = useState(defaultStocks);
   const [newStockName, setNewStockName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [profileData, setProfileData] = useState(null);
@@ -37,7 +64,7 @@ const Stocks = () => {
 
   const navigate = useNavigate();
 
-  // Listen for auth changes and load the user’s profile
+  // Listen for auth changes and load user profile.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -60,32 +87,37 @@ const Stocks = () => {
     }
   };
 
-  // When profile data changes, combine default stocks with the user's saved stocks
+  // When profile data changes, combine default stocks with saved stocks.
   useEffect(() => {
     const savedStocks = profileData?.savedStocks || [];
-    const combined = [...defaultStocks, ...savedStocks];
-    const unique = [...new Set(combined)];
+    // Convert saved ticker symbols into objects using the mapping (if available).
+    const savedStockOptions = savedStocks.map(symbol => ({
+      symbol,
+      name: stockFullNames[symbol] || symbol
+    }));
+    const combined = [...defaultStockOptions, ...savedStockOptions];
+    // Remove duplicates by ticker symbol.
+    const unique = combined.filter((option, index, self) =>
+      index === self.findIndex(o => o.symbol === option.symbol)
+    );
     setStocks(unique);
   }, [profileData]);
 
-  // Load saved stock recommendations from the user's profile
+  // Load saved stock recommendations.
   useEffect(() => {
     if (profileData && profileData.stockRecommendations) {
       setRecommendations(profileData.stockRecommendations);
     }
   }, [profileData]);
 
-  // Removed automatic fetching of recommendations on profileData change.
-  // Recommendations now update only when the refresh button is pressed.
-
-  // Generate exactly 5 recommendations and save them in the user's document
+  // Generate exactly 5 stock recommendations.
   const fetchStockRecommendations = async () => {
     if (!profileData) {
       setErrorMessage('User profile not loaded yet.');
       return;
     }
     const profileString = `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Expenses: ${profileData.expenses}.`;
-    const combinedStocks = stocks.join(', ');
+    const combinedStocks = stocks.map(s => s.symbol).join(', ');
     const extraInstruction = stocks.length < 10
       ? ` Note: There are only ${stocks.length} stocks provided; please include additional stock suggestions to reach a total of 10 recommendations.`
       : '';
@@ -108,9 +140,9 @@ const Stocks = () => {
       const recs = response.data.choices[0].message.content
         .trim()
         .split('\n')
-        .filter((line) => line.trim() !== '');
+        .filter(line => line.trim() !== '');
       const finalRecs = recs.slice(0, 5);
-      // Save recommendations to the user's profile under "stockRecommendations"
+      // Save recommendations to the user's profile.
       const userDocRef = doc(db, 'users', userId);
       await setDoc(userDocRef, { stockRecommendations: finalRecs }, { merge: true });
       setRecommendations(finalRecs);
@@ -121,11 +153,11 @@ const Stocks = () => {
     }
   };
 
-  // Fetch daily stock data from Alpha Vantage
+  // Fetch daily stock data from Alpha Vantage.
   const fetchStockData = async (stockSymbol) => {
     setLoading(true);
     try {
-      const response = await axios.get(`https://www.alphavantage.co/query`, {
+      const response = await axios.get('https://www.alphavantage.co/query', {
         params: {
           function: 'TIME_SERIES_DAILY',
           symbol: stockSymbol,
@@ -139,7 +171,7 @@ const Stocks = () => {
         return;
       }
       const formattedData = Object.keys(data)
-        .map((date) => ({
+        .map(date => ({
           date,
           close: parseFloat(data[date]['4. close']),
         }))
@@ -158,9 +190,9 @@ const Stocks = () => {
     }
   }, [selectedStock]);
 
-  // GPT call to get the ticker symbol for a stock
-  const fetchTickerSymbol = async (stockName) => {
-    const prompt = `Find the ticker symbol for the stock "${stockName}". Only respond with the ticker symbol if it is listed on https://stockanalysis.com. If not, respond with "INVALID".`;
+  // GPT call to get the ticker symbol for a stock.
+  const fetchTickerSymbol = async (stockInput) => {
+    const prompt = `Find the ticker symbol for the stock "${stockInput}". Only respond with the ticker symbol if it is listed on https://stockanalysis.com. If not, respond with "INVALID".`;
     try {
       const response = await axios.post(
         apiUrl,
@@ -182,7 +214,7 @@ const Stocks = () => {
     }
   };
 
-  // Add a new stock by updating the user's profile ("savedStocks" field)
+  // Add a new stock.
   const handleAddStock = async () => {
     if (!newStockName.trim()) {
       setErrorMessage('Please enter a stock name.');
@@ -191,7 +223,8 @@ const Stocks = () => {
     setErrorMessage('');
     const tickerSymbol = await fetchTickerSymbol(newStockName);
     if (tickerSymbol && tickerSymbol !== 'INVALID') {
-      if (stocks.includes(tickerSymbol)) {
+      // Prevent duplicate entries.
+      if (stocks.some(s => s.symbol === tickerSymbol)) {
         setErrorMessage('Stock is already in the list.');
         return;
       }
@@ -201,7 +234,9 @@ const Stocks = () => {
         const updatedStocks = [...currentStocks, tickerSymbol];
         await setDoc(userDocRef, { savedStocks: updatedStocks }, { merge: true });
         setProfileData(prev => ({ ...prev, savedStocks: updatedStocks }));
-        setStocks([...new Set([...defaultStocks, ...updatedStocks])]);
+        // Add the new stock to the stocks list.
+        const newEntry = { symbol: tickerSymbol, name: newStockName };
+        setStocks(prev => [...prev, newEntry]);
         setNewStockName('');
       } catch (error) {
         console.error('Error adding stock:', error);
@@ -220,7 +255,7 @@ const Stocks = () => {
   return (
     <div className="flex h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white mx-auto p-4">
       <div className="flex flex-col md:flex-row w-full gap-4">
-        {/* Main white container with scrolling enabled */}
+        {/* Main white container */}
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl overflow-y-auto">
           <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Top Stocks</h2>
           <div className="flex justify-center items-center gap-6 mb-6">
@@ -245,8 +280,8 @@ const Stocks = () => {
               className="w-full p-2 border border-blue-400 rounded-lg bg-blue-100 text-blue-700"
             >
               {stocks.map((stock, index) => (
-                <option key={index} value={stock}>
-                  {stock}
+                <option key={index} value={stock.symbol}>
+                  {stock.name}
                 </option>
               ))}
             </select>

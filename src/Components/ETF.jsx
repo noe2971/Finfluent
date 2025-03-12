@@ -19,14 +19,70 @@ const ETF = () => {
   const alphaVantageKey = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your actual key
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
+  // Default list of ETFs (full names)
   const defaultETFs = [
-    'SPY', 'VOO', 'QQQ', 'IVV', 'DIA', 'EFA', 'IEMG', 'VTI', 'SCHB', 'XLF'
+    'SPDR S&P 500 ETF Trust',
+    'Vanguard S&P 500 ETF',
+    'iShares Core S&P 500 ETF',
+    'Vanguard Total Stock Market ETF',
+    'Invesco QQQ Trust Series I',
+    'Vanguard Growth ETF',
+    'Vanguard FTSE Developed Markets ETF',
+    'Vanguard Value ETF',
+    'iShares Core MSCI EAFE ETF',
+    'Vanguard Total Bond Market ETF',
+    'iShares Core U.S. Aggregate Bond ETF',
+    'iShares Russell 1000 Growth ETF',
+    'iShares Core S&P Mid-Cap ETF',
+    'Vanguard Dividend Appreciation ETF',
+    'iShares Core MSCI Emerging Markets ETF',
+    'SPDR Gold Shares',
+    'Vanguard Total International Stock ETF',
+    'Vanguard FTSE Emerging Markets ETF',
+    'iShares Core S&P Small Cap ETF',
+    'Vanguard Information Technology ETF',
+    'Invesco S&P 500 Equal Weight ETF',
+    'Vanguard Mid-Cap ETF'
   ];
 
-  const [selectedETF, setSelectedETF] = useState('SPY');
+  // Mapping from full ETF name to ticker symbol.
+  const etfMapping = {
+    'SPDR S&P 500 ETF Trust': 'SPY',
+    'Vanguard S&P 500 ETF': 'VOO',
+    'iShares Core S&P 500 ETF': 'IVV',
+    'Vanguard Total Stock Market ETF': 'VTI',
+    'Invesco QQQ Trust Series I': 'QQQ',
+    'Vanguard Growth ETF': 'VUG',
+    'Vanguard FTSE Developed Markets ETF': 'VEA',
+    'Vanguard Value ETF': 'VTV',
+    'iShares Core MSCI EAFE ETF': 'IEFA',
+    'Vanguard Total Bond Market ETF': 'BND',
+    'iShares Core U.S. Aggregate Bond ETF': 'AGG',
+    'iShares Russell 1000 Growth ETF': 'IWF',
+    'iShares Core S&P Mid-Cap ETF': 'IJH',
+    'Vanguard Dividend Appreciation ETF': 'VIG',
+    'iShares Core MSCI Emerging Markets ETF': 'IEMG',
+    'SPDR Gold Shares': 'GLD',
+    'Vanguard Total International Stock ETF': 'VXUS',
+    'Vanguard FTSE Emerging Markets ETF': 'VWO',
+    'iShares Core S&P Small Cap ETF': 'IJR',
+    'Vanguard Information Technology ETF': 'VGT',
+    'Invesco S&P 500 Equal Weight ETF': 'RSP',
+    'Vanguard Mid-Cap ETF': 'VO'
+  };
+
+  // Convert the defaultETF list into an array of objects { name, symbol }
+  const defaultETFOptions = defaultETFs.map(name => ({
+    name,
+    symbol: etfMapping[name] || name
+  }));
+
+  // State: selectedETF holds the ticker symbol.
+  const [selectedETF, setSelectedETF] = useState(defaultETFOptions[0].symbol);
+  // etfs is an array of { name, symbol } objects.
+  const [etfs, setEtfs] = useState(defaultETFOptions);
   const [etfData, setEtfData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [etfs, setEtfs] = useState(defaultETFs);
   const [newEtfName, setNewEtfName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [profileData, setProfileData] = useState(null);
@@ -35,7 +91,7 @@ const ETF = () => {
 
   const navigate = useNavigate();
 
-  // Listen for auth changes and load user profile
+  // Listen for auth changes and load user profile.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -51,30 +107,37 @@ const ETF = () => {
       const userDocRef = doc(db, 'users', uid);
       const docSnap = await getDoc(userDocRef);
       if (docSnap.exists()) {
-        const data = docSnap.data();
-        setProfileData(data);
+        setProfileData(docSnap.data());
       }
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
   };
 
-  // When profile data changes, combine default ETFs with the saved ETFs from profile
+  // When profile data changes, combine default ETFs with the saved ETFs from profile.
   useEffect(() => {
     const savedETFs = profileData?.savedETFs || [];
-    const combined = [...defaultETFs, ...savedETFs];
-    const unique = [...new Set(combined)];
+    // Convert saved ticker symbols into objects using the mapping (if available).
+    const savedETFOptions = savedETFs.map(symbol => {
+      const fullName = Object.keys(etfMapping).find(key => etfMapping[key] === symbol) || symbol;
+      return { name: fullName, symbol };
+    });
+    const combined = [...defaultETFOptions, ...savedETFOptions];
+    // Remove duplicates by ticker symbol.
+    const unique = combined.filter((option, index, self) =>
+      index === self.findIndex(o => o.symbol === option.symbol)
+    );
     setEtfs(unique);
   }, [profileData]);
 
-  // Load saved ETF recommendations (if any) from profile
+  // Load saved ETF recommendations from profile.
   useEffect(() => {
     if (profileData && profileData.etfRecommendations) {
       setRecommendations(profileData.etfRecommendations);
     }
   }, [profileData]);
 
-  // Refresh ETF recommendations based on default ETFs and saved ETFs
+  // Refresh ETF recommendations.
   const handleRefreshRecommendations = async () => {
     if (!profileData) {
       setErrorMessage("User profile not loaded yet.");
@@ -83,7 +146,8 @@ const ETF = () => {
     const profileString = profileData 
       ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Expenses: ${profileData.expenses}.`
       : "No user profile available.";
-    const combinedETFs = etfs.join(", ");
+    // Use ticker symbols for recommendations.
+    const combinedETFs = etfs.map(e => e.symbol).join(", ");
     const extraInstruction = etfs.length < 10 
       ? ` Note: There are only ${etfs.length} ETFs provided; please include additional ETF suggestions to reach a total of 10 recommendations.` 
       : "";
@@ -104,7 +168,7 @@ const ETF = () => {
           .trim()
           .split("\n")
           .filter(line => line.trim() !== "");
-        // Save recommendations to the user's profile
+        // Save recommendations to the user's profile.
         const userDocRef = doc(db, 'users', userId);
         await setDoc(userDocRef, { etfRecommendations: fetchedRecs }, { merge: true });
         setRecommendations(fetchedRecs);
@@ -119,11 +183,11 @@ const ETF = () => {
     }
   };
 
-  // Fetch daily ETF data from Alpha Vantage
+  // Fetch daily ETF data from Alpha Vantage.
   const fetchEtfData = async (etfSymbol) => {
     setLoading(true);
     try {
-      const response = await axios.get(`https://www.alphavantage.co/query`, {
+      const response = await axios.get('https://www.alphavantage.co/query', {
         params: {
           function: 'TIME_SERIES_DAILY',
           symbol: etfSymbol,
@@ -156,12 +220,8 @@ const ETF = () => {
   }, [selectedETF]);
 
   // GPT call to get the ticker symbol for an ETF.
-  // The prompt instructs ChatGPT to use the user input (even if partial)
-  // to return the ticker symbol of the ETF that best represents that input as listed on stockanalysis.com.
-  // If the input appears to be a ticker symbol, validate its existence.
-  // If no close match is found, return "INVALID".
   const fetchTickerSymbol = async (etfInput) => {
-    const prompt = `Given the user input "${etfInput}", if it is a partial or full name of an ETF, return the ticker symbol of the most representative ETF from stockanalysis.com. If the input already appears to be a ticker symbol, verify its existence on the site and return the ticker symbol. Return only the ticker symbol with no additional text. Never return anything else,If no matching ETF is found or it can not be found on stockanalysis.com, respond with "INVALID".`;
+    const prompt = `Given the user input "${etfInput}", if it is a partial or full name of an ETF, return the ticker symbol of the most representative ETF from stockanalysis.com. If the input already appears to be a ticker symbol, verify its existence on the site and return the ticker symbol. Return only the ticker symbol with no additional text. Never return anything else. If no matching ETF is found or it cannot be found on stockanalysis.com, respond with "INVALID".`;
     try {
       const response = await axios.post(apiUrl, {
         model: "gpt-4",
@@ -184,7 +244,7 @@ const ETF = () => {
     }
   };
 
-  // Add a new ETF only if the validated ticker symbol is not "INVALID" and is not already in the list.
+  // Add a new ETF (this part is exactly as in your original working code).
   const handleAddEtf = async () => {
     if (!newEtfName.trim()) {
       setErrorMessage('Please enter an ETF name or ticker symbol.');
@@ -194,7 +254,7 @@ const ETF = () => {
     const tickerSymbol = await fetchTickerSymbol(newEtfName);
     if (tickerSymbol && tickerSymbol !== 'INVALID') {
       // Prevent duplicate entries.
-      if (etfs.includes(tickerSymbol)) {
+      if (etfs.some(e => e.symbol === tickerSymbol)) {
         setErrorMessage('ETF is already in the list.');
         return;
       }
@@ -204,7 +264,9 @@ const ETF = () => {
         const updatedETFs = [...currentETFs, tickerSymbol];
         await setDoc(userDocRef, { savedETFs: updatedETFs }, { merge: true });
         setProfileData(prev => ({ ...prev, savedETFs: updatedETFs }));
-        setEtfs([...new Set([...defaultETFs, ...updatedETFs])]);
+        // Update etfs list by adding a new entry.
+        const newEntry = { name: newEtfName, symbol: tickerSymbol };
+        setEtfs(prev => [...prev, newEntry]);
         setNewEtfName('');
       } catch (error) {
         console.error("Error adding ETF:", error);
@@ -223,7 +285,7 @@ const ETF = () => {
   return (
     <div className="flex h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white mx-auto p-4">
       <div className="flex flex-col md:flex-row w-full gap-4 overflow-y-auto">
-        {/* Main white container with scrolling enabled if needed */}
+        {/* Main container */}
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl overflow-y-auto">
           <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Top ETFs</h2>
           <div className="flex justify-center items-center gap-6 mb-6">
@@ -248,8 +310,8 @@ const ETF = () => {
               className="w-full p-2 border border-blue-400 rounded-lg bg-blue-100 text-blue-700"
             >
               {etfs.map((etf, index) => (
-                <option key={index} value={etf}>
-                  {etf}
+                <option key={index} value={etf.symbol}>
+                  {etf.name}
                 </option>
               ))}
             </select>
@@ -274,7 +336,7 @@ const ETF = () => {
                 </LineChart>
               </ResponsiveContainer>
             )}
-            {/* Add ETF Section */}
+            {/* Add ETF Section (preserved from your original code) */}
             <div className="mt-6">
               <label className="block text-lg font-medium text-blue-700 mb-2">Add an ETF</label>
               <div className="w-full flex items-center gap-2">
@@ -296,7 +358,7 @@ const ETF = () => {
             </div>
           </div>
         </div>
-        {/* Right Recommendations Container */}
+        {/* Recommendations Panel */}
         <div className="bg-blue-50 text-blue-900 p-4 rounded-lg border border-blue-300 w-full md:w-1/3">
           <h3 className="text-xl font-bold mb-2">ETF Recommendations</h3>
           {recommendations.length > 0 ? (
