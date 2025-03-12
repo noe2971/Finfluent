@@ -2,42 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { db, auth } from '../config/firebase'; // Assuming firebase is already set up
+import { db, auth } from '../config/firebase';
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import LanguageSelector from './language';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState(null); // Store profile data here
-  const [language, setLanguage] = useState('English'); // Default language
+  const [profileData, setProfileData] = useState(null);
+  const [language, setLanguage] = useState('English');
 
   const apiKey = import.meta.env.VITE_GPT_KEY;
   const apiUrl = "https://api.openai.com/v1/chat/completions";
 
-  // Supported languages
   const languages = [
-    "English",
-    "Hindi",
-    "Bengali",
-    "Telugu",
-    "Marathi",
-    "Tamil",
-    "Gujarati",
-    "Kannada",
-    "Malayalam",
-    "Punjabi",
-    "Odia",
+    "English", "Hindi", "Bengali", "Telugu", "Marathi",
+    "Tamil", "Gujarati", "Kannada", "Malayalam", "Punjabi", "Odia"
   ];
 
-  // Fetch user profile data
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchUserProfile(user.uid); // Fetch user profile when logged in
-      }
+      if (user) fetchUserProfile(user.uid);
     });
     return () => unsubscribe();
   }, []);
@@ -55,19 +41,21 @@ function App() {
       setMessages(newMessages);
       setInput('');
 
+      // Create a concise user profile summary
       const userProfile = profileData
-        ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments.join(', ')}.`
-        : "No user profile available.";
+        ? `Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Expenses: ${profileData.bigExpenses}, Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current: ${profileData.currentInvestments.join(', ')}`
+        : "No profile";
 
-      const prompt = `Language: ${language}. ${userProfile} User Question: ${input}`;
-      console.log(prompt)
+      // Concise prompt with minimal tokens
+      const prompt = `Lang: ${language}. ${userProfile}. Q: ${input}`;
+      console.log(prompt);
 
       try {
         setLoading(true);
         const result = await axios.post(
           apiUrl,
           {
-            model: "gpt-4",
+            model: "gpt-3.5-turbo", // Using turbo model
             messages: [{ role: "user", content: prompt }],
           },
           {
@@ -91,7 +79,7 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] max-w-4xl mx-auto space-y-4 p-4 ">
-      <div className="flex gap-10 justify-center items-center justify-content w-full px-8 mb-8">
+      <div className="flex gap-10 justify-center items-center w-full px-8 mb-8">
         <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
         <select
           className="p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
@@ -99,9 +87,7 @@ function App() {
           onChange={(e) => setLanguage(e.target.value)}
         >
           {languages.map((lang, index) => (
-            <option key={index} value={lang}>
-              {lang}
-            </option>
+            <option key={index} value={lang}>{lang}</option>
           ))}
         </select>
       </div>
@@ -109,10 +95,8 @@ function App() {
         <div className="p-8 h-[65vh] overflow-y-auto">
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.user ? 'justify-end' : 'justify-start'} mb-2`}>
-              <div className={`rounded-lg p-3 shadow-md overflow-x-hidden flex flex-wrap font-sans text-left ${msg.user ? 'bg-blue-600 text-white' : 'bg-blue-100'}`}>
-                <ReactMarkdown>
-                  {msg.text}
-                </ReactMarkdown>
+              <div className={`rounded-lg p-3 shadow-md flex flex-wrap font-sans ${msg.user ? 'bg-blue-600 text-white' : 'bg-blue-100'}`}>
+                <ReactMarkdown>{msg.text}</ReactMarkdown>
               </div>
             </div>
           ))}
@@ -131,7 +115,7 @@ function App() {
         <div className="p-4 border-t border-gray-200 flex">
           <input
             type="text"
-            className="font-sans flex-1 p-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}

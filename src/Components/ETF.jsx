@@ -20,8 +20,7 @@ const ETF = () => {
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
   const defaultETFs = [
-    'SPY', 'VOO', 'QQQ', 'IVV', 'DIA', 'EFA', 'IEMG', 'VTI', 'SCHB', 'XLF',
-    'NIFTYBEES', 'BANKBEES', 'ICICINIFTY', 'SBINIFTY', 'UTINIFTY'
+    'SPY', 'VOO', 'QQQ', 'IVV', 'DIA', 'EFA', 'IEMG', 'VTI', 'SCHB', 'XLF'
   ];
 
   const [selectedETF, setSelectedETF] = useState('SPY');
