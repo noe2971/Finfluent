@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import Dashboard from "./Components/dashboard";
@@ -20,6 +21,20 @@ import Information from "./Components/information";
 import Infoetf from "./Components/info(etf)";
 import ETF from "./Components/ETF";
 import Health from "./Components/health"; // Import the Health component
+import ReactGA from "react-ga4"; // Added for Google Analytics
+
+// Initialize GA4 with your Measurement ID
+const GA_MEASUREMENT_ID = "G-Z0WVJJHDR7"; // Replace with your GA4 Measurement ID
+ReactGA.initialize(GA_MEASUREMENT_ID);
+
+// New component to track page views
+function TrackPageView() {
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+  return null;
+}
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +60,7 @@ function App() {
 
   return (
     <Router>
+      <TrackPageView />
       {user ? (
         // When user is logged in, wrap the sidebar and main content in a flex container.
         <div className="flex">
@@ -74,7 +90,6 @@ function App() {
         </div>
       ) : (
         // When user is not logged in, show public routes.
-        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />

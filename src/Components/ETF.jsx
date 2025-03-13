@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer
-} from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -16,10 +7,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 const ETF = () => {
   const gptKey = import.meta.env.VITE_GPT_KEY;
-  const alphaVantageKey = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your actual key
+  const alphaVantageKey = import.meta.env.VITE_ALPHAVANTAGE_KEY; // Replace with your actual key
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
-  // Default list of ETFs (full names)
+  // Default list of ETFs (full names) and mapping to ticker symbols.
   const defaultETFs = [
     'SPDR S&P 500 ETF Trust',
     'Vanguard S&P 500 ETF',
@@ -45,7 +36,6 @@ const ETF = () => {
     'Vanguard Mid-Cap ETF'
   ];
 
-  // Mapping from full ETF name to ticker symbol.
   const etfMapping = {
     'SPDR S&P 500 ETF Trust': 'SPY',
     'Vanguard S&P 500 ETF': 'VOO',
@@ -71,27 +61,29 @@ const ETF = () => {
     'Vanguard Mid-Cap ETF': 'VO'
   };
 
-  // Convert the defaultETF list into an array of objects { name, symbol }
   const defaultETFOptions = defaultETFs.map(name => ({
     name,
     symbol: etfMapping[name] || name
   }));
 
-  // State: selectedETF holds the ticker symbol.
+  // Component state variables.
   const [selectedETF, setSelectedETF] = useState(defaultETFOptions[0].symbol);
-  // etfs is an array of { name, symbol } objects.
   const [etfs, setEtfs] = useState(defaultETFOptions);
-  const [etfData, setEtfData] = useState([]);
+  const [analysis, setAnalysis] = useState('');
   const [loading, setLoading] = useState(false);
   const [newEtfName, setNewEtfName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [profileData, setProfileData] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [analysisLoaded, setAnalysisLoaded] = useState(false);
 
   const navigate = useNavigate();
 
-  // Listen for auth changes and load user profile.
+  // Compute the "Learn More" URL based on the selected ETF ticker.
+  const moreInfoUrl = `https://stockanalysis.com/etf/${selectedETF}/`;
+
+  // Listen for authentication changes and load the user profile.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -114,10 +106,9 @@ const ETF = () => {
     }
   };
 
-  // When profile data changes, combine default ETFs with the saved ETFs from profile.
+  // Combine default ETFs with the saved ETFs from the user profile.
   useEffect(() => {
     const savedETFs = profileData?.savedETFs || [];
-    // Convert saved ticker symbols into objects using the mapping (if available).
     const savedETFOptions = savedETFs.map(symbol => {
       const fullName = Object.keys(etfMapping).find(key => etfMapping[key] === symbol) || symbol;
       return { name: fullName, symbol };
@@ -130,7 +121,7 @@ const ETF = () => {
     setEtfs(unique);
   }, [profileData]);
 
-  // Load saved ETF recommendations from profile.
+  // Load saved ETF recommendations from the user profile.
   useEffect(() => {
     if (profileData && profileData.etfRecommendations) {
       setRecommendations(profileData.etfRecommendations);
@@ -146,7 +137,6 @@ const ETF = () => {
     const profileString = profileData 
       ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Expenses: ${profileData.expenses}.`
       : "No user profile available.";
-    // Use ticker symbols for recommendations.
     const combinedETFs = etfs.map(e => e.symbol).join(", ");
     const extraInstruction = etfs.length < 10 
       ? ` Note: There are only ${etfs.length} ETFs provided; please include additional ETF suggestions to reach a total of 10 recommendations.` 
@@ -168,7 +158,6 @@ const ETF = () => {
           .trim()
           .split("\n")
           .filter(line => line.trim() !== "");
-        // Save recommendations to the user's profile.
         const userDocRef = doc(db, 'users', userId);
         await setDoc(userDocRef, { etfRecommendations: fetchedRecs }, { merge: true });
         setRecommendations(fetchedRecs);
@@ -183,43 +172,7 @@ const ETF = () => {
     }
   };
 
-  // Fetch daily ETF data from Alpha Vantage.
-  const fetchEtfData = async (etfSymbol) => {
-    setLoading(true);
-    try {
-      const response = await axios.get('https://www.alphavantage.co/query', {
-        params: {
-          function: 'TIME_SERIES_DAILY',
-          symbol: etfSymbol,
-          apikey: alphaVantageKey,
-        },
-      });
-      const data = response.data['Time Series (Daily)'];
-      if (!data) {
-        console.warn('No data returned for:', etfSymbol);
-        setEtfData([]);
-        setLoading(false);
-        return;
-      }
-      const formattedData = Object.keys(data).map(date => ({
-        date,
-        close: parseFloat(data[date]['4. close']),
-      }));
-      setEtfData(formattedData.reverse());
-    } catch (error) {
-      console.error("Error fetching ETF data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (selectedETF) {
-      fetchEtfData(selectedETF);
-    }
-  }, [selectedETF]);
-
-  // GPT call to get the ticker symbol for an ETF.
+  // GPT call to fetch a ticker symbol for an ETF (used when adding a new ETF).
   const fetchTickerSymbol = async (etfInput) => {
     const prompt = `Given the user input "${etfInput}", if it is a partial or full name of an ETF, return the ticker symbol of the most representative ETF from stockanalysis.com. If the input already appears to be a ticker symbol, verify its existence on the site and return the ticker symbol. Return only the ticker symbol with no additional text. Never return anything else. If no matching ETF is found or it cannot be found on stockanalysis.com, respond with "INVALID".`;
     try {
@@ -244,7 +197,6 @@ const ETF = () => {
     }
   };
 
-  // Add a new ETF (this part is exactly as in your original working code).
   const handleAddEtf = async () => {
     if (!newEtfName.trim()) {
       setErrorMessage('Please enter an ETF name or ticker symbol.');
@@ -253,7 +205,6 @@ const ETF = () => {
     setErrorMessage('');
     const tickerSymbol = await fetchTickerSymbol(newEtfName);
     if (tickerSymbol && tickerSymbol !== 'INVALID') {
-      // Prevent duplicate entries.
       if (etfs.some(e => e.symbol === tickerSymbol)) {
         setErrorMessage('ETF is already in the list.');
         return;
@@ -264,7 +215,6 @@ const ETF = () => {
         const updatedETFs = [...currentETFs, tickerSymbol];
         await setDoc(userDocRef, { savedETFs: updatedETFs }, { merge: true });
         setProfileData(prev => ({ ...prev, savedETFs: updatedETFs }));
-        // Update etfs list by adding a new entry.
         const newEntry = { name: newEtfName, symbol: tickerSymbol };
         setEtfs(prev => [...prev, newEntry]);
         setNewEtfName('');
@@ -276,11 +226,128 @@ const ETF = () => {
     }
   };
 
-  const handleNavigate = () => {
-    navigate(`/info(etf)?stock=${selectedETF}`);
+  // Functions for fetching investment analysis (this replaces the chart).
+  const fetchCachedAnalysis = async () => {
+    if (!userId || !selectedETF) return false;
+    try {
+      const analysisDocRef = doc(db, "investmentAnalysis", `${userId}_${selectedETF}`);
+      const docSnap = await getDoc(analysisDocRef);
+      if (docSnap.exists()) {
+        setAnalysis(docSnap.data().analysis);
+        setAnalysisLoaded(true);
+        return true;
+      }
+    } catch (error) {
+      console.error("Error fetching cached analysis:", error);
+    }
+    return false;
   };
-  const handleNavigateToEtfs = () => { navigate(`/etfs`); };
-  const handleNavigateToStocks = () => { navigate(`/livestocks`); };
+
+  const fetchAlphaData = async () => {
+    if (!selectedETF) return null;
+    const overviewUrl = `https://www.alphavantage.co/query?function=ETF_PROFILE&symbol=${selectedETF}&apikey=${alphaVantageKey}`;
+    const dailyUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${selectedETF}&apikey=${alphaVantageKey}`;
+    const monthlyUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${selectedETF}&apikey=${alphaVantageKey}`;
+    try {
+      const [overviewRes, dailyRes, monthlyRes] = await Promise.all([
+        axios.get(overviewUrl),
+        axios.get(dailyUrl),
+        axios.get(monthlyUrl)
+      ]);
+      return {
+        overview: overviewRes.data,
+        daily: dailyRes.data,
+        monthly: monthlyRes.data
+      };
+    } catch (error) {
+      console.error("Error fetching Alpha Vantage data:", error);
+      return null;
+    }
+  };
+
+  const fetchInvestmentAnalysis = async (forceRefresh = false) => {
+    if (!selectedETF) return;
+    setLoading(true);
+    if (!forceRefresh && userId && analysisLoaded) {
+      setLoading(false);
+      return;
+    } else if (!forceRefresh && userId) {
+      const cached = await fetchCachedAnalysis();
+      if (cached) {
+        setLoading(false);
+        return;
+      }
+    }
+
+    const userProfile = profileData
+      ? `User Profile: Name: ${profileData.name}, Age: ${profileData.age}, Salary: ${profileData.salary}, Big Expenses: ${profileData.bigExpenses}, Desired Investments: ${profileData.desiredInvestments}, Goals: ${profileData.goals}, Current Investments: ${profileData.currentInvestments ? profileData.currentInvestments.join(', ') : 'None'}.`
+      : "No user profile available.";
+
+    const alphaData = await fetchAlphaData();
+    let alphaInfo = "";
+    let latestClose = "N/A";
+    if (alphaData && alphaData.daily && alphaData.daily["Time Series (Daily)"]) {
+      const dailyDates = Object.keys(alphaData.daily["Time Series (Daily)"]);
+      const latestDate = dailyDates[0];
+      latestClose = alphaData.daily["Time Series (Daily)"][latestDate]["4. close"];
+    }
+    if (alphaData) {
+      const overview = alphaData.overview;
+      let overviewStr = overview && overview.ETFName ? `ETF Name: ${overview.ETFName}. ` : "";
+      overviewStr += overview && overview.InceptionDate ? `Inception: ${overview.InceptionDate}. ` : "";
+      overviewStr += overview && overview.NetAssets ? `Net Assets: ${overview.NetAssets}. ` : "";
+      overviewStr += overview && overview.ExpenseRatio ? `Expense Ratio: ${overview.ExpenseRatio}. ` : "";
+      alphaInfo = `${overviewStr} Latest Daily Close Price: ${latestClose}.`;
+    } else {
+      alphaInfo = "No Alpha Vantage data available.";
+    }
+    
+    const prompt = `${userProfile} Alpha Vantage Data: ${alphaInfo} Provide a concise investment analysis for the asset corresponding to "${selectedETF}" using its full name (not the ticker). Begin your response with: "Disclaimer: This is AI generated advice and should not be solely relied upon. Please review the details yourself before making any decisions." Then, using the most recent financial data available, present key financial ratios (with explanations), recent trends, market performance, and potential risks. Include both positive and negative factors, and conclude with a definite yes or no as to whether it is a good investment. Keep your response under 200 words. Do not mention that you are getting data from OpenAI or Alpha Vantage.`;
+
+    try {
+      const result = await axios.post(
+        apiUrl,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: prompt }],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${gptKey}`,
+          },
+        }
+      );
+      const botResponse = result.data.choices[0].message.content;
+      setAnalysis(botResponse);
+      setAnalysisLoaded(true);
+      if (userId) {
+        const analysisDocRef = doc(db, "investmentAnalysis", `${userId}_${selectedETF}`);
+        await setDoc(analysisDocRef, { analysis: botResponse, timestamp: new Date() });
+      }
+    } catch (error) {
+      console.error('Error fetching investment analysis:', error);
+      setAnalysis("Sorry, we were unable to fetch the investment analysis. Please try again later or choose another investment.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch investment analysis when the selected ETF changes and the user/profile is loaded.
+  useEffect(() => {
+    if (selectedETF && userId && profileData && !analysisLoaded) {
+      fetchInvestmentAnalysis();
+    }
+  }, [selectedETF, userId, profileData, analysisLoaded]);
+
+  const handleRefreshAnalysis = () => {
+    setAnalysisLoaded(false);
+    fetchInvestmentAnalysis(true);
+  };
+
+  // Navigation stubs (modify if you wish to add navigation functionality).
+  const handleNavigateToEtfs = () => navigate('/etfs');
+  const handleNavigateToStocks = () => navigate('/livestocks');
 
   return (
     <div className="flex h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] text-white mx-auto p-4">
@@ -306,7 +373,7 @@ const ETF = () => {
             <label className="block text-lg font-medium text-blue-700 mb-2">Select an ETF</label>
             <select
               value={selectedETF}
-              onChange={(e) => setSelectedETF(e.target.value)}
+              onChange={(e) => { setSelectedETF(e.target.value); setAnalysisLoaded(false); }}
               className="w-full p-2 border border-blue-400 rounded-lg bg-blue-100 text-blue-700"
             >
               {etfs.map((etf, index) => (
@@ -316,27 +383,27 @@ const ETF = () => {
               ))}
             </select>
           </div>
-          <button
-            onClick={handleNavigate}
-            className="text-blue-500 font-bold text-[3vh] flex items-center justify-center pt-4 hover:underline"
-          >
-            Learn more about {selectedETF}
-          </button>
+          {/* Display the investment analysis (replacing the chart) */}
           <div className="mt-8">
             {loading ? (
-              <p className="text-center text-blue-900">Loading ETF data...</p>
+              <p className="text-center text-blue-900">Loading investment analysis...</p>
             ) : (
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={etfData}>
-                  <XAxis dataKey="date" tick={{ fill: '#1f2937' }} />
-                  <YAxis domain={['auto', 'auto']} tick={{ fill: '#1f2937' }} />
-                  <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 51, 102, 0.8)', color: 'white' }} />
-                  <CartesianGrid stroke="#111827" strokeDasharray="5 5" />
-                  <Line type="monotone" dataKey="close" stroke="#111827" strokeWidth={3} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+              <div className="text-lg text-gray-800">{analysis}</div>
             )}
-            {/* Add ETF Section (preserved from your original code) */}
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={handleRefreshAnalysis}
+                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
+              >
+                Refresh Analysis
+              </button>
+              <a target="_blank" rel="noopener noreferrer" href={moreInfoUrl}>
+                <div className="text-blue-500 font-bold text-[3vh] flex items-center justify-center">
+                  Learn More
+                </div>
+              </a>
+            </div>
+            {/* Add ETF Section */}
             <div className="mt-6">
               <label className="block text-lg font-medium text-blue-700 mb-2">Add an ETF</label>
               <div className="w-full flex items-center gap-2">
