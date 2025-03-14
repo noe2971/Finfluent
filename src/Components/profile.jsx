@@ -395,37 +395,7 @@ const Profile = () => {
                     className="block w-full text-gray-700 text-base"
                   />
                 </div>
-
-                {/* Optional Email */}
-                <div className="mb-4">
-                  <label className="block font-medium text-gray-700 mb-1 text-base">
-                    Email:
-                  </label>
-                  <input
-                    type="email"
-                    name="mail"
-                    value={formData.mail}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                    className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
-                  />
-                </div>
-
-                {/* Optional Phone */}
-                <div className="mb-4">
-                  <label className="block font-medium text-gray-700 mb-1 text-base">
-                    Phone Number:
-                  </label>
-                  <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number"
-                    className="block w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
-                  />
-                </div>
-
+                
                 {/* Annual Salary */}
                 <div className="mb-4">
                   <label className="block font-medium text-gray-700 mb-1 text-base">
