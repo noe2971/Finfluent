@@ -42,7 +42,7 @@ const home = () => {
     {
       icon: <MessageSquare className="w-6 h-6" />,
       title: "Finance AI Chatbot",
-      description: "Ask our AI-powered chatbot for financial guidance in any language. Gain valuable insights and learn financial terms effortlessly.",
+      description: "Ask our AI-powered chatbot if you have any financial questions. It can respond in many languages. Gain valuable insights and learn financial terms effortlessly.",
       image: chatbot
     },
     {
