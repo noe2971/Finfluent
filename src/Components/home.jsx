@@ -33,7 +33,7 @@ const home = () => {
     {
       icon: <UserCircle className="w-6 h-6" />,
       title: "Profile Builder",
-      description: "Build a personalized profile to tailor financial advice and investment options to your needs. Update your details anytime with ease.",
+      description: "Build a personalized profile to allow us to understand your needs better. Update your details anytime with ease.",
       image: profile
     }
   ];
@@ -41,20 +41,20 @@ const home = () => {
   const additionalFeatures = [
     {
       icon: <MessageSquare className="w-6 h-6" />,
-      title: "Finance Advice Chatbot",
+      title: "Finance AI Chatbot",
       description: "Ask our AI-powered chatbot for financial guidance in any language. Gain valuable insights and learn financial terms effortlessly.",
       image: chatbot
     },
     {
       icon: <Target className="w-6 h-6" />,
-      title: "Custom Investment Plans",
-      description: "Receive investment plans customized to match your risk tolerance and financial goals, backed by data-driven insights.",
+      title: "Financial Lessons",
+      description: "Learn about the basics of finance and smart spending. You get the opportunity to view insightful articles and useful resources to broaden your understanding.",
       image: plan
     },
     {
       icon: <HeartPulse className="w-6 h-6" />,
-      title: "Financial Health Tracker",
-      description: "Get personalized advice on improving your financial stability. Track your progress and receive actionable recommendations.",
+      title: "Action Plan",
+      description: "Get a plan that will help improve your financial stability. Track your progress and receive actionable insights on possible improvements you can make.",
       image: health
     }
   ];
@@ -146,10 +146,10 @@ const home = () => {
                   AI-Powered Finance
                 </span>
                 <h1 className="text-4xl md:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
-                  Smart Investing Made Simple
+                 Finance Made Simple
                 </h1>
                 <p className="text-lg text-white">
-                  Harness AI-powered insights, track expenses, and get personalized investment suggestions for stocks and ETFs
+                  Harness AI-powered insights, learn key financial concepts, track expenses and savings, and learn about popular stocks and ETFs.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
                   <Link to="/signup">
@@ -158,7 +158,7 @@ const home = () => {
                       whileTap={{ scale: 0.95 }}
                       className="w-full sm:w-auto px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium inline-flex items-center justify-center space-x-2"
                     >
-                      <span>Start Investing</span>
+                      <span>Start Learning</span>
                       <ChevronRight className="w-4 h-4" />
                     </motion.button>
                   </Link>
@@ -199,7 +199,7 @@ const home = () => {
             </p>
             <br />
             <p className="text-white max-w-3xl mx-auto">
-              In India especially, many don't know how to invest and what to invest in. Additionally, many don't track their spendings and savings. Therefore, ultimately lacking the ability to build a financially stable life. This platform gives everyone, no matter their financial background, the opportunity to track their savings, get personalized investment suggestions and learn about key financial concepts all for free. We aim to give everyone the ability to expand their financial knowledge annd make smart financial decisions.
+              In India especially, many don't know how to invest and what to invest in. Additionally, many don't track their spendings and savings. Therefore, ultimately lacking the ability to build a financially stable life. This platform gives everyone, no matter their financial background, the opportunity to track their savings, get insights about popular investments and learn about key financial concepts all for free. We aim to give everyone the ability to expand their financial knowledge annd make smart financial decisions.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">

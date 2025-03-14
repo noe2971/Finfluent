@@ -129,19 +129,19 @@ Categories:
 1. Current Risk Level:
    - Provide three bullet points covering risk assessment, influencing factors, and recommendations.
 2. Monthly Savings Target:
-   - Provide three bullet points covering recommended target, calculation rationale, and additional considerations.
+   - Provide three bullet points covering target, calculation rationale, and additional considerations.
 3. Emergency Fund Target:
-   - Provide three bullet points covering the recommended emergency fund, reasoning, and steps to build it.
+   - Provide three bullet points covering the emergency fund, reasoning, and steps to build it.
 4. Asset Allocation:
-   - Provide three bullet points covering recommended percentages for stocks, bonds, and cash/savings, along with explanations.
+   - Provide three bullet points covering percentages for stocks, bonds, and cash/savings (make the suggestion general for anyone, dont mention name of person here), along with explanations.
 5. Debt Management:
-   - Provide three bullet points covering strategies for reducing debt, actionable steps, and timeline recommendations.
+   - Provide three bullet points covering strategies for reducing debt, actionable steps, and timeline.
 6. Insurance Advice:
-   - Provide three bullet points covering health and life insurance considerations and recommendations.
+   - Provide three bullet points covering health and life insurance considerations and how it can be improved
 7. Additional Actions & Priorities:
-   - Provide three bullet points outlining further recommendations, prioritization, and rationale.
+   - Provide three bullet points outlining further ideas for prioritization, and rationale.
 8. Methodology & Conclusion:
-   - Provide three bullet points summarizing the analytical approach, rationale behind recommendations, and overall conclusion.
+   - Provide three bullet points summarizing the analytical approach, rationale behind all the information provided, and overall conclusion.
 
 Return your answer in plain text with these exact formatting guidelines and ensure each category contains exactly three bullet points.
     `;
