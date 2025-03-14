@@ -49,7 +49,7 @@ export default function SidebarLayout({ children }) {
     { icon: PieChart, label: 'Expenses', path: '/finances' },
     { icon: LineChart, label: 'Investment', path: '/etfs' },
     { icon: BookOpen, label: 'Lessons', path: '/lessons' },
-    { icon: Heart, label: 'Recommendations', path: '/health' },
+    { icon: Heart, label: 'Action Plan', path: '/health' },
     { icon: LogOut, label: 'Logout', path: 'logout' },
   ];
 

@@ -80,7 +80,7 @@ function App() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-[82%] bg-gradient-to-b from-[#172554] to-[#bae6fd] max-w-4xl mx-auto space-y-4 p-4 ">
       <div className="flex gap-10 justify-center items-center w-full px-8 mb-8">
-        <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance Advisor</h1>
+        <h1 className="font-bold font-sans text-[3rem] drop-shadow-lg text-white">Finance AI Chatbot</h1>
         <select
           className="p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
           value={language}

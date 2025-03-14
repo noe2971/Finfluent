@@ -141,7 +141,7 @@ const ETF = () => {
     const extraInstruction = etfs.length < 10 
       ? ` Note: There are only ${etfs.length} ETFs provided; please include additional ETF suggestions to reach a total of 10 recommendations.` 
       : "";
-    const prompt = `${profileString} Given the above user profile, recommend the top five ETFs based on this list: ${combinedETFs}.${extraInstruction} Ensure that there are no repeated ETFs in your recommendations. For each recommended ETF, provide one concise sentence of reasoning for its selection, max 10 words. Label them from 'Must Buy' to 'Strong Buy' to 'Buy' in that order, and provide no additional information.`;
+    const prompt = `${profileString} Given the above user profile, recommend the top five ETFs based on this list: ${combinedETFs}.${extraInstruction} Ensure that there are no repeated ETFs in your recommendations. For each recommended ETF, provide one concise sentence of reasoning for its selection, max 10 words. Dont say anything else`;
     
     try {
       const response = await axios.post(apiUrl, {
@@ -302,7 +302,7 @@ const ETF = () => {
       alphaInfo = "No Alpha Vantage data available.";
     }
     
-    const prompt = `${userProfile} Alpha Vantage Data: ${alphaInfo} Provide a concise investment analysis for the asset corresponding to "${selectedETF}" using its full name (not the ticker). Begin your response with: "Disclaimer: This is AI generated advice and should not be solely relied upon. Please review the details yourself before making any decisions." Then, using the most recent financial data available, present key financial ratios (with explanations), recent trends, market performance, and potential risks. Include both positive and negative factors, and conclude with a definite yes or no as to whether it is a good investment. Keep your response under 200 words. Do not mention that you are getting data from OpenAI or Alpha Vantage.`;
+    const prompt = `${userProfile} Alpha Vantage Data: ${alphaInfo} Provide a concise investment analysis for the asset corresponding to "${selectedETF}" using its full name (not the ticker). Using the most recent financial data available, present key financial ratios (with explanations), recent trends, market performance, and potential risks. Include both positive and negative factors. Keep your response under 200 words. Do not mention that you are getting data from OpenAI or Alpha Vantage. Avoid using the words reccomendation, advice, or good investment. Just give general information`;
 
     try {
       const result = await axios.post(
@@ -354,7 +354,7 @@ const ETF = () => {
       <div className="flex flex-col md:flex-row w-full gap-4 overflow-y-auto">
         {/* Main container */}
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl overflow-y-auto">
-          <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Top ETFs</h2>
+          <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">ETFs</h2>
           <div className="flex justify-center items-center gap-6 mb-6">
             <button
               onClick={handleNavigateToEtfs}
@@ -427,7 +427,7 @@ const ETF = () => {
         </div>
         {/* Recommendations Panel */}
         <div className="bg-blue-50 text-blue-900 p-4 rounded-lg border border-blue-300 w-full md:w-1/3">
-          <h3 className="text-xl font-bold mb-2">ETF Recommendations</h3>
+          <h3 className="text-xl font-bold mb-2">Popular ETFs</h3>
           {recommendations.length > 0 ? (
             <ul className="list-disc pl-4">
               {recommendations.slice(0, 5).map((rec, idx) => (
@@ -435,13 +435,13 @@ const ETF = () => {
               ))}
             </ul>
           ) : (
-            <p>No recommendations available.</p>
+            <p>Error</p>
           )}
           <button
             onClick={handleRefreshRecommendations}
             className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300 mt-4"
           >
-            Refresh Recommendations
+            Refresh
           </button>
         </div>
       </div>
