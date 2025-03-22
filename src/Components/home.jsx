@@ -8,6 +8,7 @@ import health from '../config/health.jpg';
 import plan from '../config/plan.jpg';
 import profile from '../config/profile.jpg';
 import stocks from '../config/stocks.jpg';
+import videoSample from '../config/video.mp4';
 
 const home = () => {
   const scrollToSection = (sectionId) => {
@@ -94,7 +95,7 @@ const home = () => {
               </motion.div>
             </Link>
             <div className="hidden md:flex items-center space-x-8">
-            <button 
+              <button 
                 onClick={() => scrollToSection('home')}
                 className="text-sm text-white hover:text-blue-400 transition-colors"
               >
@@ -111,6 +112,12 @@ const home = () => {
                 className="text-sm text-white hover:text-blue-400 transition-colors"
               >
                 Features
+              </button>
+              <button 
+                onClick={() => scrollToSection('howItWorks')}
+                className="text-sm text-white hover:text-blue-400 transition-colors"
+              >
+                How it works
               </button>
               <button 
                 onClick={() => scrollToSection('contact')}
@@ -146,7 +153,7 @@ const home = () => {
                   AI-Powered Finance
                 </span>
                 <h1 className="text-4xl md:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
-                 Finance Made Simple
+                  Finance Made Simple
                 </h1>
                 <p className="text-lg text-white">
                   Harness AI-powered insights, learn key financial concepts, track expenses and savings, and learn about popular stocks and ETFs.
@@ -309,13 +316,33 @@ const home = () => {
         </div>
       </div>
 
-      <div id="contact" className="py-20 bg-gray-900">
+      <div id="howItWorks" className="py-20 bg-gray-900">
+        <div className="container mx-auto px-6">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-400 mb-4">How It Works</h2>
+            <p className="text-white">Watch the video below to understand how you can get started on Wealthify, your one stop destination to wealth management. Learn how to use our platform properly and view a demo of how to use all the features effectively</p>
+          </motion.div>
+          <div className="flex justify-center">
+            <video controls className="w-full max-w-4xl rounded-lg shadow-2xl">
+              <source src={videoSample} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <div id="contact" className="py-20 bg-gray-800">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-400 mb-4">Contact Us</h2>
             <p className="text-white">Get in touch with us</p>
           </div>
-          <div className="max-w-2xl mx-auto bg-gray-800 rounded-xl p-8">
+          <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8">
             <div className="flex flex-col items-center justify-center space-y-6">
               <div className="flex items-center space-x-3">
                 <Mail className="w-6 h-6 text-blue-400" />
@@ -334,7 +361,7 @@ const home = () => {
         </div>
       </div>
 
-      <footer className="border-t border-blue-900/20 bg-gray-800">
+      <footer className="border-t border-blue-900/20 bg-gray-900">
         <div className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
