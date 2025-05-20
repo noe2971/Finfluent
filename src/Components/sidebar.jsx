@@ -72,7 +72,7 @@ export default function SidebarLayout({ children }) {
             {/* Header */}
             <div className="h-24 flex items-center justify-between border-b border-blue-900/30 px-4">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                Wealthify
+                Finfluent
               </h1>
               <button onClick={toggleSidebar}>
                 <Menu className="h-6 w-6 text-blue-300" />

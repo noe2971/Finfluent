@@ -91,7 +91,7 @@ const home = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                Wealthify
+                Finfluent
               </motion.div>
             </Link>
             <div className="hidden md:flex items-center space-x-8">
@@ -202,7 +202,7 @@ const home = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Mission</h2>
             <p className="text-white max-w-3xl mx-auto">
-              Wealthify was founded with a mission to democratize financial literacy and empower everyone to make informed financial decisions. According to an article by Mint, only about 3% of the Indian population invests in the stock market, compared to 13% of the Chinese population and 55% of the US. This number highlights the extent of this issue expecially in India. Most people do not know the importance of investing their money and are not taught why it is important in school. 
+              Finfluent was founded with a mission to democratize financial literacy and empower everyone to make informed financial decisions. According to an article by Mint, only about 3% of the Indian population invests in the stock market, compared to 13% of the Chinese population and 55% of the US. This number highlights the extent of this issue expecially in India. Most people do not know the importance of investing their money and are not taught why it is important in school. 
             </p>
             <br />
             <p className="text-white max-w-3xl mx-auto">
@@ -325,7 +325,7 @@ const home = () => {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold text-blue-400 mb-4">How It Works</h2>
-            <p className="text-white">Watch the video below to understand how you can get started on Wealthify, your one stop destination to wealth management. Learn how to use our platform properly and view a demo of how to use all the features effectively</p>
+            <p className="text-white">Watch the video below to understand how you can get started on Finfluent, your one stop destination to wealth management. Learn how to use our platform properly and view a demo of how to use all the features effectively</p>
           </motion.div>
           <div className="flex justify-center">
             <video controls className="w-full max-w-4xl rounded-lg shadow-2xl">
@@ -365,7 +365,7 @@ const home = () => {
         <div className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-blue-400">Wealthify</h4>
+              <h4 className="text-lg font-semibold text-blue-400">Finfluent</h4>
               <p className="text-sm text-white">
                 Making wealth management accessible to everyone
               </p>
