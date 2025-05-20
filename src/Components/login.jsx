@@ -99,7 +99,7 @@ const Login = () => {
         <nav className="bg-gray-900/80 backdrop-blur-md text-white flex justify-between items-center py-4 px-6 border-b border-blue-900/30 fixed w-full z-50">
           {/* Big "Wealthify" linking to home */}
           <Link to="/home" className="text-xl font-semibold text-blue-400 hover:text-blue-300">
-            Wealthify
+            Finfluent
           </Link>
           <div>
             <Link to="/home" className="mr-4 text-sm hover:text-blue-300 transition-colors">
